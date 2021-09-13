@@ -161,6 +161,7 @@ class MapManager:
 class localMapManager(MapManager):
     def __init__(self):
         self.name = 'local'
+        self.indexName = 'olmappyIndex.json'
         self.mapDir = Config.settings['mapPath']
         self.hiddenDir = 'hidden/'
         self.replaceDir = 'replaced/'
@@ -171,7 +172,7 @@ class localMapManager(MapManager):
         self.validateMapList()
 
     def getMapListFileName(self):
-        return self.mapDir + 'olmappy.json'
+        return self.mapDir + self.indexName
 
     def loadMapList(self):
         filename = self.getMapListFileName()
@@ -180,7 +181,7 @@ class localMapManager(MapManager):
             try:
                 self.maps = json.load(indexFile)
                 self.vaild = True
-                Info('read json map list ' + filename + ': ' + str(len(self.maps)) + ' entries')
+                Debug('read json map list ' + filename + ': ' + str(len(self.maps)) + ' entries')
             except Exception as E:
                 raise OlmappyParseError('json map list file ' + filename + ' could not be parsed: ' + str(E)) from E
         except OlmappyError as E:
@@ -197,8 +198,8 @@ class localMapManager(MapManager):
         try:
             indexFile = open(file = filename, mode = 'wt', encoding = 'utf-8')
             try:
-                json.dump(self.maps, indexFile)
-                Info('wrote json map list ' + filename + ': ' + str(len(self.maps)) + ' entries')
+                json.dump(self.maps, indexFile, indent=4)
+                Debug('wrote json map list ' + filename + ': ' + str(len(self.maps)) + ' entries')
             except Exception as E:
                 raise OlmappyJSONWriteError('failed to dump map list to json file ' + filename + ': ' + str(E)) from E
         except Exception as E:
@@ -320,6 +321,9 @@ class localMapManager(MapManager):
         cntUp = 0
         cntFail = 0
         res = False
+        if not remote.valid:
+            Warn('UPDATE: failed due to not having a valid remote map list')
+            return False
         try:
             if not remote.update():
                 raise OlmappyUpdateError('remote map list could not be updated')
@@ -352,9 +356,15 @@ class localMapManager(MapManager):
         cntFail = 0
         cntReplace = 0
         remote.update()
+        if not remote.valid:
+            Warn('import: failed due to not having a valid remote map list')
+            return
+
         for fname in os.listdir(d):
             fullname = d + fname
             try:
+                if equalFileNames(fname, self.indexName):
+                    continue
                 fname2 = fname # TODO: hidden file name part removal
                 if stat.S_ISREG(os.lstat(fullname).st_mode):
                     m = self.findMapByFileName(fname2)
@@ -464,7 +474,7 @@ class remoteMapManager(MapManager):
             Warn(self.name + ' map list: no valid entries found')
             self.valid = False
         else:
-            Warn(self.name + ' map list: ' +str(len(self.maps)) + ' unique entries found')
+            Info(self.name + ' map list: ' +str(len(self.maps)) + ' unique entries found')
         return self.valid
 
     def update(self, forceRefresh = False):
@@ -510,10 +520,11 @@ class Settings:
         self.settings['logLevel'] = LogLevel.INFO
         self.settings['filenameCaseSensitive'] = False
         self.settings['removeUnknownMaps'] = False
-        self.settings['configFile'] = '~/.config/olmappy/config.json'
+        self.settings['autoImport'] = True
+        self.settings['configFile'] = os.getenv('HOME', '.') +  '/.config/olmappy.json'
 
     def applySettings(self, newSettings):
-        for name, value in newSettings:
+        for name, value in newSettings.items():
             self.settings[name] = value
 
     def load(self, configFile = None, errorOk = True):
@@ -525,6 +536,7 @@ class Settings:
             newSettings = json.load(cf)
             cf.close()
             self.applySettings(newSettings)
+            Debug('loaded config file "' + configFile + '"')
             if 'configFile' in newSettings:
                 if not equalFileNames(newSettings['configFile'], configFile):
                     Debug('recursively loading config file "' + newSettings['configFile'] + '"')
@@ -544,6 +556,13 @@ class Settings:
                 Warn(text)
                 raise OlmappyConfigError(text) from E
 
+    def save(self, configFile = None):
+        if configFile == None:
+            configFile = self.settings['configFile']
+        cf = open(file = configFile, mode = 'wt', encoding = 'utf-8')
+        json.dump(self.settings, cf, indent=4)
+        cf.close()
+
 ##############################################################################
 # main program entry point                                                   #
 ##############################################################################
@@ -551,7 +570,9 @@ class Settings:
 Config = Settings()
 
 Config.load()
-Config.settings['removeUnknownMaps'] = True
+
+#Config.settings['removeUnknownMaps'] = True
+#Config.save()
 
 m = localMapManager()
 r = remoteMapManager()
