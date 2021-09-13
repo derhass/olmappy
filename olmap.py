@@ -2,6 +2,7 @@
 
 # required libraries
 
+import argparse
 import enum
 import json
 import os
@@ -67,9 +68,9 @@ def Debug(message):
 ##############################################################################
 
 class MapType(enum.IntEnum):
-    SinglePlayer = 1,
-    ChallengeMode = 2,
-    MultiPlayer = 4,
+    SinglePlayer = 1
+    ChallengeMode = 2
+    MultiPlayer = 4
 
     def getDesc(self):
         v = self.value
@@ -246,14 +247,20 @@ class localMapManager(MapManager):
         MapManager.__init__(self)
         self.name = 'local'
         self.indexName = 'olmappyIndex.json'
-        self.mapDir = Config.settings['mapPath']
         self.hiddenDir = 'hidden/'
         self.replaceDir = 'replaced/'
-        os.makedirs(self.mapDir, exist_ok=True)
-        os.makedirs(self.mapDir + self.hiddenDir, exist_ok=True)
-        os.makedirs(self.mapDir + self.replaceDir, exist_ok=True)
-        self.loadMapList()
-        self.validateMapList()
+        self.mapDir = './'
+
+    def update(self, forceRefresh = False):
+        if self.mapDir != Config.settings['mapPath']:
+            self.mapDir = Config.settings['mapPath']
+            forceRefresh = True
+        if forceRefresh or not self.valid:
+            os.makedirs(self.mapDir, exist_ok=True)
+            os.makedirs(self.mapDir + self.hiddenDir, exist_ok=True)
+            os.makedirs(self.mapDir + self.replaceDir, exist_ok=True)
+            self.loadMapList()
+            self.validateMapList()
 
     def getMapListFileName(self):
         return self.mapDir + self.indexName
@@ -365,6 +372,8 @@ class localMapManager(MapManager):
                 else:
                     Warn(self.name + ' map ' + mapName(myMap) + ' is already present, ignoring conflicting ' + mapName(m))
         Debug(self.name + ' map list: found ' + str(len(self.maps)) + ' unique entries')
+        if len(self.maps) < 1:
+            self.vaild = False
 
     def updateMapFromRemote(self, m, remote):
         myMap = self.findAndReplaceExistingMap(m)
@@ -443,7 +452,7 @@ class localMapManager(MapManager):
         cntReplace = 0
         remote.update()
         if not remote.valid:
-            Warn('import: failed due to not having a valid remote map list')
+            Warn('IMPORT: failed due to not having a valid remote map list')
             return
 
         for fname in os.listdir(d):
@@ -455,13 +464,13 @@ class localMapManager(MapManager):
                 if stat.S_ISREG(os.lstat(fullname).st_mode):
                     m = self.findMapByFileName(fname2)
                     if m == None:
-                        Debug('import: file "' + fullname + '" not yet known')
+                        Debug('IMPORT: file "' + fullname + '" not yet known')
                         newMap = remote.findMapByFileName(fname2)
                         if newMap != None:
                             if Filter.apply(newMap) == None:
                                 newMap = None
                         if newMap == None:
-                            text = 'import: file "' + fullname + '" not on remote map list'
+                            text = 'IMPORT: file "' + fullname + '" not on remote map list'
                             if Config.settings['removeUnknownMaps']:
                                 try:
                                     newMap = {}
@@ -481,20 +490,20 @@ class localMapManager(MapManager):
                             if self.validateMap(newMap):
                                 self.maps = self.maps + [newMap]
                                 cntImp = cntImp + 1
-                                Info('import: file "' + fullname + '" imported')
+                                Info('IMPORT: file "' + fullname + '" imported')
                             else:
-                                Warn('import: file "' + fullname + '" did not match info from server')
+                                Warn('IMPORT: file "' + fullname + '" did not match info from server')
                                 cntMismatch = cntMismatch + 1
 
                     else:
-                        Debug('import: file "' + fullname + '" already in index')
+                        Debug('IMPORT: file "' + fullname + '" already in index')
                         cntAlready = cntAlready + 1
                 else:
-                    Debug('import: ignoring non-file ' + fullname)
+                    Debug('IMPORT: ignoring non-file ' + fullname)
             except Exception as E:
-                Warn('import: failed to import "'+fullname+'": ' + str(E))
+                Warn('IMPORT: failed to import "'+fullname+'": ' + str(E))
                 cntFail = cntFail + 1
-        Info('import "' + d + '": ' + str(cntImp) + ' imported, ' + str(cntAlready) + ' already indexed, ' + str(cntIgn) + ' ignored, ' + str(cntReplace) + ' replaced ' + str(cntFail) + ' failed to import')
+        Info('IMPORT: "' + d + '": ' + str(cntImp) + ' imported, ' + str(cntAlready) + ' already indexed, ' + str(cntIgn) + ' ignored, ' + str(cntReplace) + ' replaced, ' + str(cntFail) + ' failed to import')
 
     def importFromRemote(self, remote):
         self.importDirFromRemote(self.mapDir, remote)
@@ -629,6 +638,14 @@ class Settings:
         for name, value in newSettings.items():
             self.settings[name] = value
 
+    def validateSettings(self):
+        if len(self.settings['mapPath']) < 1:
+            self.settings['mapPath'] = './'
+            Warn('invalid mapPath, using "' + self.settings['mapPath'] + '" instead')
+        else:
+            if self.settings['mapPath'][-1] != '/':
+                self.settings['mapPath'] = self.settings['mapPath'] + '/'
+
     def load(self, configFile = None, errorOk = True):
         newSettings = {}
         if configFile == None:
@@ -638,6 +655,7 @@ class Settings:
             newSettings = json.load(cf)
             cf.close()
             self.applySettings(newSettings)
+            self.validateSettings()
             Debug('loaded config file "' + configFile + '"')
             if 'configFile' in newSettings:
                 if not equalFileNames(newSettings['configFile'], configFile):
@@ -662,8 +680,129 @@ class Settings:
         if configFile == None:
             configFile = self.settings['configFile']
         cf = open(file = configFile, mode = 'wt', encoding = 'utf-8')
-        json.dump(self.settings, cf, indent=4)
+        writeSettings = self.settings.copy()
+        del writeSettings['configFile']
+        json.dump(writeSettings, cf, indent=4)
         cf.close()
+
+##############################################################################
+# commandline parsing                                                        #
+##############################################################################
+
+class Commandline:
+    def __init__(self):
+        self.parser = argparse.ArgumentParser(description='Manage Overload maps.')
+        self.parser.add_argument('operation',
+                                 type=Operation.OperationString,
+                                 nargs='?',
+                                 default = 'UPDATE',
+                                 help = 'the operation to execute')
+        self.parser.add_argument('-s', '--set',
+                                 nargs = 2,
+                                 metavar = ('$NAME', '$VALUE'),
+                                 action = 'append',
+                                 help = 'set configuration $NAME to $VALUE')
+
+    def parse(self):
+        self.args = self.parser.parse_args()
+        if self.args.set != None:
+            for s in self.args.set:
+                Config.settings[s[0]]=s[1]
+            Config.validateSettings()
+        return self.args.operation
+
+##############################################################################
+# operation conrtol                                                         #
+##############################################################################
+
+class Operation(enum.IntEnum):
+    HELP = 0
+    IMPORT = 1
+    UPDATE = 2
+    LISTLOCAL = 3
+    LISTREMOTE = 4
+    HIDE = 5
+    UNHIDE = 6
+    WRITECONFIG = 7
+
+    def apply(self):
+        operations = [
+            self.doHelp,
+            self.doImport,
+            self.doUpdate,
+            self.doListLocal,
+            self.doListRemote,
+            self.doHide,
+            self.doUnhide,
+            self.doWriteConfig
+        ]
+
+        res = 999
+        try:
+            res = operations[self.value]()
+            if res != 0:
+                Error('Operation ' + self.asString() + ' failed with code: ' + str(res))
+        except Exception as E:
+            Error('Operation ' + self.asString() + ' failed: ' + str(E))
+            res = 998
+        return res
+
+    def asString(self):
+        for name, value in Operation.__members__.items():
+            if value == self.value:
+                return name
+        raise OlmappyParseError('Operation ' + str(self.value)+ ' is not valid')
+
+    @classmethod
+    def OperationString(cls,s):
+        try:
+            return cls.__members__[s.upper()]
+        except KeyError as E:
+            raise ValueError from E
+
+    def doHelp(self):
+        print('xxx')
+        return 0
+
+    def doImport(self):
+        local = localMapManager()
+        remote = remoteMapManager()
+        local.update()
+        local.importFromRemote(remote)
+        local.saveMapList()
+        return 0
+
+    def doUpdate(self):
+        local = localMapManager()
+        remote = remoteMapManager()
+        local.update()
+        if Config.settings['autoImport']:
+            local.importFromRemote(remote)
+        local.updateFromRemote(remote)
+        local.saveMapList()
+        return 0
+
+    def doList(self, local=True):
+        manager = localMapManager() if local else remoteMapManager()
+        manager.update()
+        manager.listMaps()
+        return 0
+
+    def doListLocal(self):
+        return self.doList(True)
+
+    def doListRemote(self):
+        return self.doList(False)
+
+    def doHide(self):
+        return 1
+
+    def doUnhide(self):
+        return 1
+
+    def doWriteConfig(self):
+        Config.save()
+        return 0
 
 ##############################################################################
 # main program entry point                                                   #
@@ -671,16 +810,9 @@ class Settings:
 
 Config = Settings()
 Filter = MapFilter()
+Cmd = Commandline()
 
+operation = Cmd.parse()
 Config.load()
 
-#Config.settings['removeUnknownMaps'] = True
-#Config.save()
-
-m = localMapManager()
-r = remoteMapManager()
-m.importFromRemote(r)
-m.updateFromRemote(r)
-r.listMaps()
-m.saveMapList()
-
+exit(operation.apply())
