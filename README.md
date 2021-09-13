@@ -33,6 +33,7 @@ optional arguments:
   -U, --unhidden        add filter: only apply to not hidden maps
   -A, --all             for HIDE or UNHIDE operations, when no filter is
                         specified: really apply to ALL maps
+  --version             show program's version number and exit
 ```
 
 #### OPERATIONS:
