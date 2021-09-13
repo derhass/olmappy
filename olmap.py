@@ -63,6 +63,53 @@ def Debug(message):
     Log(message, LogLevel.DEBUG)
 
 ##############################################################################
+# Level properties                                                           #
+##############################################################################
+
+class MapType(enum.IntEnum):
+    SinglePlayer = 1,
+    ChallengeMode = 2,
+    MultiPlayer = 4,
+
+    def getDesc(self):
+        v = self.value
+        if v == self.SinglePlayer:
+            return 'SP'
+        elif v == self.ChallengeMode:
+            return 'CM'
+        elif v == self.MultiPlayer:
+            return 'MP'
+        return 'UN'
+
+    @classmethod
+    def getCombinedDesc(cls, v, fillOthers = '  ', sep=','):
+        desc = '['
+        cnt = 0
+        for m in list(cls):
+            if m & v:
+                if cnt > 0:
+                    desc = desc + sep
+                desc = desc + m.getDesc()
+                cnt = cnt + 1
+            else:
+                if fillOthers != None:
+                    if cnt > 0:
+                        desc = desc + sep
+                    desc = desc + fillOthers
+                    cnt = cnt + 1
+        desc = desc + ']'
+        return desc
+
+    @classmethod
+    def getFromDesc(cls, desc):
+        t = desc.casefold()
+        for m in list(cls):
+            d = m.getDesc().casefold()
+            if d == t:
+                return m
+        raise OlmappyParseError('Map type ' +desc + ' can\'t be parsed')
+
+##############################################################################
 # utility functions                                                          #
 ##############################################################################
 
@@ -75,6 +122,21 @@ def equalFileNames(a, b):
 
 def mapName(m):
     return '"' + m['id'] + '/' + m['filename'] + '"'
+
+def mapTime(m):
+    t = time.localtime(m['mtime'])
+    return time.strftime('%Y-%m-%d %H:%M:%S', t)
+
+def mapDesc(m):
+    desc = MapType.getCombinedDesc(m['types']) + ' "' + m['filename'] + '": ['
+    cnt = 0
+    for n in m['names']:
+        if cnt > 0:
+            desc = desc + ', '
+        desc = desc + '"' + n + '"'
+        cnt = cnt + 1
+    desc = desc + ']' + ' (' + mapTime(m) + ')'
+    return desc
 
 ##############################################################################
 # base class for the map managers                                            #
@@ -133,6 +195,22 @@ class MapManager:
                 m['size'] = -1 # will later be updated after download
             if 'levels' not in m:
                 raise OlmappyValidationError('LEVELS part missing')
+            else:
+                if len(m['levels']) < 1:
+                    raise OlmappyValidationError('LEVELS part empty')
+                m['names'] = []
+                for l in m['levels']:
+                    if 'type' not in l:
+                        raise OlmappyValidationError('LEVEL without a type')
+                    if 'name' not in l:
+                        raise OlmappyValidationError('LEVEL without a name')
+                    mt = MapType.getFromDesc(l['type'])
+                    if 'types' not in m:
+                        m['types'] = mt
+                    else:
+                        m['types'] = m['types'] | mt
+                    if l['name'] not in m['names']:
+                        m['names'] = m['names'] + [l['name']]
             if 'hidden' not in m:
                 m['hidden'] = 0
 
@@ -153,6 +231,11 @@ class MapManager:
             return False
         return True
 
+    def listMaps(self):
+        for m in self.maps:
+            if not Filter.apply(m):
+                continue
+            print(mapDesc(m))
 
 ##############################################################################
 # class for managing the locally stored maps                                 #
@@ -160,6 +243,7 @@ class MapManager:
 
 class localMapManager(MapManager):
     def __init__(self):
+        MapManager.__init__(self)
         self.name = 'local'
         self.indexName = 'olmappyIndex.json'
         self.mapDir = Config.settings['mapPath']
@@ -328,6 +412,8 @@ class localMapManager(MapManager):
             if not remote.update():
                 raise OlmappyUpdateError('remote map list could not be updated')
             for m in remote.maps:
+                if not Filter.apply(m):
+                    continue
                 try:
                     code = self.updateMapFromRemote(m, remote)
                     if code > 0:
@@ -371,6 +457,9 @@ class localMapManager(MapManager):
                     if m == None:
                         Debug('import: file "' + fullname + '" not yet known')
                         newMap = remote.findMapByFileName(fname2)
+                        if newMap != None:
+                            if Filter.apply(newMap) == None:
+                                newMap = None
                         if newMap == None:
                             text = 'import: file "' + fullname + '" not on remote map list'
                             if Config.settings['removeUnknownMaps']:
@@ -416,6 +505,7 @@ class localMapManager(MapManager):
 
 class remoteMapManager(MapManager):
     def __init__(self):
+        MapManager.__init__(self)
         self.name = 'remote'
         self.valid = False
         self.listURL = Config.settings['mapServer'] + Config.settings['mapServerListURL']
@@ -508,6 +598,18 @@ class remoteMapManager(MapManager):
             raise OlmappyTransferError(text) from E
 
 ##############################################################################
+# class for map filtering                                                    #
+##############################################################################
+
+class MapFilter:
+    def __init__(self):
+        self.name = None
+
+    def apply(self, m):
+        # TODO: implement filtering
+        return True
+
+##############################################################################
 # class for configuration settings                                           #
 ##############################################################################
 
@@ -568,6 +670,7 @@ class Settings:
 ##############################################################################
 
 Config = Settings()
+Filter = MapFilter()
 
 Config.load()
 
@@ -578,5 +681,6 @@ m = localMapManager()
 r = remoteMapManager()
 m.importFromRemote(r)
 m.updateFromRemote(r)
+r.listMaps()
 m.saveMapList()
 
