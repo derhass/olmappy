@@ -53,13 +53,13 @@ The `OPERATION`s are:
 The following configuration values are present:
 * `mapPath`: The path to the Overload maps, default: `/usr/share/Revival/Overload/`. Note that this path may not be writable by the user by default. You have been warned.
 * `mapServer`: The map server, default: `https://overloadmaps.com`.
-* 'mapServerListURL`: The URL of the JSON map list on the server, default: `/data/all.json`.
+* `mapServerListURL`: The URL of the JSON map list on the server, default: `/data/all.json`.
 * `logLevel`: Controls the verbosity from 0 (only errors) to 3 (debug messages), default: `2` (information).
 * `filenameCaseSensitive`: Treat filenames as case sensitive, default: `False` for compatibility with Windows.
 * `filterCaseSensitive`: Treat name and filename filters as case sensitive, default: `False` for convenience.
 * `removeUnknownMaps`: When importing maps, remove all not present on the server, default: `False`.
 * `autoImport`: Before updating, also run import, default: `True`.
-* `configFile`: The path to the configuration file, default: `$HOME/.config/olmappy.json`. This option is not written to the configfile, it is only used via `--set` to specify the location of the config file for laoding / writing.
+* `configFile`: The path to the configuration file, default: `$HOME/.config/olmappy.json`. This option is not written to the configfile, it is only used via `--set` to specify the location of the config file for loading / writing.
 
 Use `WRITECONFIG` to generate the initial config file, and edit the values as you please.
 
@@ -85,7 +85,7 @@ To list only the locally available challenge mode maps, use:
 olmap.py LISTLOCAL --type CM
 ```
 
-To list all Multiplayer maps containing and `ro` or `bs` in their name, and which are from 2021 or newer, on the server, use:
+To list all Multiplayer maps containing `ro` or `bs` in their name, and which are from 2021 or newer, on the server, use:
 ```
 olmap.py LISTREMOTE --type mp --name ro --name bs --time-after 2021-01-01
 ```
