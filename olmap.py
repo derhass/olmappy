@@ -771,7 +771,7 @@ class MapFilter:
 class Settings:
     def __init__(self):
         self.settings = {}
-        self.settings['mapPath'] = '/home/mh/tmp/DONTBACKUP/olmappy/'
+        self.settings['mapPath'] = ' /usr/share/Revival/Overload/'
         self.settings['mapServer'] = 'https://overloadmaps.com'
         self.settings['mapServerListURL'] = '/data/all.json'
         self.settings['logLevel'] = LogLevel.INFO
@@ -839,11 +839,20 @@ class Settings:
 class Commandline:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description='Manage Overload maps.')
+        ophelp = 'the operation to execute, must be one of: '
+        cnt =0
+        for name,value in Operation.__members__.items():
+            if cnt > 0:
+                ophelp = ophelp + ', '
+            ophelp = ophelp +  name
+            cnt = cnt + 1
+        ophelp = ophelp + '. Default is %(default)s.'
+
         self.parser.add_argument('operation',
                                  type=Operation.OperationString,
                                  nargs='?',
                                  default = 'UPDATE',
-                                 help = 'the operation to execute')
+                                 help = ophelp)
         self.parser.add_argument('-s', '--set',
                                  nargs = 2,
                                  metavar = ('NAME', 'VALUE'),
@@ -864,18 +873,30 @@ class Commandline:
                                  help = 'add filter for map type')
         self.parser.add_argument('-b', '--time-before',
                                  type = parseDateTime,
+                                 metavar = 'DATETIME',
                                  nargs = 1,
-                                 help = 'add filter for map mtime: must be before given date/time')
+                                 help = 'add filter for map mtime: must be before given DATETIME')
         self.parser.add_argument('-a', '--time-after',
                                  type = parseDateTime,
+                                 metavar = 'DATETIME',
                                  nargs = 1,
-                                 help = 'add filter for map mtime: must be at or after given date/time')
+                                 help = 'add filter for map mtime: must be at or after given DATETIME')
         self.parser.add_argument('-A', '--all',
                                  action = 'store_true',
                                  help = 'for HIDE or UNHIDE operations, when no filter is specified: really apply to ALL maps')
+        self.parser.epilog = 'See README.md for details.'
 
     def parse(self):
         self.args = self.parser.parse_args()
+
+        if self.args.set != None:
+            for s in self.args.set:
+                if s[0] == 'configFile':
+                    Config.settings[s[0]]=s[1]
+                    Config.validateSettings()
+
+        Config.load()
+
         if self.args.set != None:
             for s in self.args.set:
                 Config.settings[s[0]]=s[1]
@@ -900,7 +921,6 @@ class Commandline:
             Filter.validate()
         if self.args.all:
             Filter.explicitApplyToAll = True
-        print(self.args)
         return self.args.operation
 
 ##############################################################################
@@ -1012,6 +1032,5 @@ Filter = MapFilter()
 Cmd = Commandline()
 
 operation = Cmd.parse()
-Config.load()
 
 exit(operation.apply())
