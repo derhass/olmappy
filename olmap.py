@@ -838,6 +838,9 @@ class Settings:
         json.dump(writeSettings, cf, indent=4)
         cf.close()
 
+    def show(self,):
+        print(json.dumps(self.settings, indent=4))
+
 ##############################################################################
 # commandline parsing                                                        #
 ##############################################################################
@@ -944,6 +947,7 @@ class Operation(enum.IntEnum):
     HIDE = 5
     UNHIDE = 6
     WRITECONFIG = 7
+    SHOWCONFIG = 8
 
     def apply(self):
         operations = [
@@ -954,7 +958,8 @@ class Operation(enum.IntEnum):
             self.doListRemote,
             self.doHide,
             self.doUnhide,
-            self.doWriteConfig
+            self.doWriteConfig,
+            self.doShowConfig
         ]
 
         res = 999
@@ -1030,6 +1035,10 @@ class Operation(enum.IntEnum):
 
     def doWriteConfig(self):
         Config.save()
+        return 0
+
+    def doShowConfig(self):
+        Config.show()
         return 0
 
 ##############################################################################

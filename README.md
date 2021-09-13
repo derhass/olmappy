@@ -13,7 +13,7 @@ Manage Overload maps.
 positional arguments:
   operation             the operation to execute, must be one of: IMPORT,
                         UPDATE, LISTLOCAL, LISTREMOTE, HIDE, UNHIDE,
-                        WRITECONFIG. Default is UPDATE.
+                        WRITECONFIG, SHOWCONFIG. Default is UPDATE.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -45,6 +45,7 @@ The `OPERATION`s are:
 * `HIDE`: Hide maps from the game. A hidden map may still be updated, but stays hidden.
 * `UNHIDE`: Unhide hidden maps so that hey are seen in the game.
 * `WRITECONFIG`: Write the config file. This is useful for initally populating the config file, and may be combined with several `--set` parameters to specify config values.
+* `SHOWCONFIG`: Show the currently effective configuration (taking the config file and all `--set` parameters into account).
 
 #### CONFIGURATION:
 
