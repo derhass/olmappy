@@ -320,13 +320,20 @@ class localMapManager(MapManager):
         except Exception as E:
                 Warn('json map list ' + filename + ' could not be written: ' + str(E))
 
+    def RenameMap(self, src, dst):
+        try:
+            os.replace(src,dst)
+            Debug('renamed "' + src + '" to "' + dst + '"')
+        except Exception as E:
+            Warn('Failed to rename "' + src + '" to "' + dst + '": ' + str(E))
+            raise E
+
     def doReplaceMap(self, m):
         try: 
             d = self.mapDir + self.replaceDir
             a = self.GetMapFilename(m)
             b = d + m['filename'] + '_replaced_' + m['id']
-            os.replace(a,b)
-            Debug('backed up "' + a + '" to "' + b + '"') 
+            self.RenameMap(a,b)
         except Exception as E:
             Warn('Failed to back up replaced map ' + mapName(m) + ': ' + str(E))
 
@@ -346,11 +353,19 @@ class localMapManager(MapManager):
             self.maps.remove(replaceMap)
             return None
 
-    def GetMapFilename(self, m):
+    def GetMapFilenameAs(self, m, hidden=False, replaced = False):
         d = self.mapDir
-        if m['hidden'] > 0:
+        f = m['filename']
+        if replaced:
+            d = d + self.replaceDir
+            f = f + '_' + m['id'] + '_replaced'
+        elif hidden:
             d = d + self.hiddenDir
-        return d + m['filename']
+            f = f + '_' + m['id'] + '_hidden'
+        return d + f
+
+    def GetMapFilename(self, m):
+        return self.GetMapFilenameAs(m, hidden=( m['hidden'] > 0), replaced = False)
 
     def validateMap(self, m):
         if not MapManager.validateMap(self, m):
@@ -531,6 +546,41 @@ class localMapManager(MapManager):
 
     def importFromRemote(self, remote):
         self.importDirFromRemote(self.mapDir, remote)
+        #TODO: import hidden!!!!
+
+    def hideMap(self, m, doHide = True):
+        src = self.GetMapFilename(m)
+        dst = self.GetMapFilenameAs(m, hidden=doHide)
+        if src != dst:
+            self.RenameMap(src, dst)
+        m['hidden'] = 1 if doHide else 0
+
+    def hideMaps(self, doHide = True):
+        name = 'HIDE' if doHide else 'UNHIDE'
+        state = 'HIDDEN' if doHide else 'UNHIDDEN'
+        cntHidden = 0
+        cntAlready = 0
+        cntIgn = 0
+        cntFail = 0
+        if Filter.isEmpty():
+            raise OlmappyParseError(name + ': no filter specified, use --all to apply to all')
+        for m in self.maps:
+            if not Filter.apply(m):
+                cntIgn = cntIgn + 1
+                continue
+            if (m['hidden'] > 0) == doHide:
+                Debug(name + ': map ' + mapName(m) + ' is already ' + state)
+                cntAlready = cntAlready + 1
+                continue
+            try:
+                self.hideMap(m, doHide)
+                Info(name + ': map ' + mapName(m) + ' is now ' + state)
+                cntHidden = cntHidden + 1
+            except Exception as E:
+                Warn(name + ': map ' + mapName(m) + ' failed to ' +name.lower() + ': ' + str(E))
+                cntFail = cntFail + 1
+        Info(name + ': ' + str(cntHidden) + ' ' + state.lower()+ ', ' + str(cntAlready) + ' already ' + state.lower() + ', ' + str(cntIgn) + ' unchanged, ' + str(cntFail) + ' failed to ' +name.lower())
+
 
 ##############################################################################
 # class for managing the remote map server                                   #
@@ -641,6 +691,7 @@ class MapFilter:
         self.types = 0
         self.time_before = None
         self.time_after = None
+        self.explicitApplyToAll = False
 
     @staticmethod
     def validateStringFilter(filterList):
@@ -672,6 +723,19 @@ class MapFilter:
     def validate(self):
         self.validateStringFilter(self.names)
         self.validateStringFilter(self.filenames)
+
+    def isEmpty(self):
+        if len(self.names) > 0:
+            return False
+        if len(self.filenames) > 0:
+            return False
+        if self.types != 0:
+            return False
+        if self.time_before != None or self.time_after != None:
+            return False
+        if self.explicitApplyToAll:
+            return False
+        return True
 
     def apply(self, m):
         if self.types != 0:
@@ -806,6 +870,9 @@ class Commandline:
                                  type = parseDateTime,
                                  nargs = 1,
                                  help = 'add filter for map mtime: must be at or after given date/time')
+        self.parser.add_argument('-A', '--all',
+                                 action = 'store_true',
+                                 help = 'for HIDE or UNHIDE operations, when no filter is specified: really apply to ALL maps')
 
     def parse(self):
         self.args = self.parser.parse_args()
@@ -827,8 +894,12 @@ class Commandline:
             Filter.validate()
         if self.args.time_before != None:
             Filter.time_before = self.args.time_before[0]
+            Filter.validate()
         if self.args.time_after != None:
             Filter.time_after = self.args.time_after[0]
+            Filter.validate()
+        if self.args.all:
+            Filter.explicitApplyToAll = True
         print(self.args)
         return self.args.operation
 
@@ -837,7 +908,6 @@ class Commandline:
 ##############################################################################
 
 class Operation(enum.IntEnum):
-    HELP = 0
     IMPORT = 1
     UPDATE = 2
     LISTLOCAL = 3
@@ -916,10 +986,18 @@ class Operation(enum.IntEnum):
         return self.doList(False)
 
     def doHide(self):
-        return 1
+        local = localMapManager()
+        local.update()
+        local.hideMaps(True)
+        local.saveMapList()
+        return 0
 
     def doUnhide(self):
-        return 1
+        local = localMapManager()
+        local.update()
+        local.hideMaps(False)
+        local.saveMapList()
+        return 0
 
     def doWriteConfig(self):
         Config.save()
