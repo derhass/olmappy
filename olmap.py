@@ -139,6 +139,30 @@ def mapDesc(m):
     desc = desc + ']' + ' (' + mapTime(m) + ')'
     return desc
 
+def parseDateTime(s):
+    try:
+        err = None
+        formats = ['%Y-%m-%d %H:%M:%S',
+                   '%Y-%m-%d_%H:%M:%S',
+                   '%Y-%m-%d %H:%M',
+                   '%Y-%m-%d_%H:%M',
+                   '%m/%d/%Y %h:%m:%s %p',
+                   '%m/%d/%Y %h:%m %p',
+                   '%m/%d/%Y %h %m %s %p',
+                   '%m/%d/%Y %h %m %p',
+                   '%Y-%m-%d',
+                   '%m/%d/%Y',
+                   '%c']
+        for f in formats:
+            try:
+                t = time.strptime(s, f)
+                return time.mktime(t)
+            except ValueError as E:
+                err = E
+        raise err
+    except Exception as E:
+        raise ValueError from E
+
 ##############################################################################
 # base class for the map managers                                            #
 ##############################################################################
@@ -615,6 +639,8 @@ class MapFilter:
         self.names = []
         self.filenames = []
         self.types = 0
+        self.time_before = None
+        self.time_after = None
 
     @staticmethod
     def validateStringFilter(filterList):
@@ -666,6 +692,12 @@ class MapFilter:
                 return False
         if not self.inString(self.filenames, m['filename']):
             return False
+        if self.time_before != None:
+            if m['mtime'] >= self.time_before:
+                return False
+        if self.time_after != None:
+            if m['mtime'] < self.time_after:
+                return False
         return True
 
 ##############################################################################
@@ -766,6 +798,14 @@ class Commandline:
                                  nargs = 1,
                                  action = 'append',
                                  help = 'add filter for map type')
+        self.parser.add_argument('-b', '--time-before',
+                                 type = parseDateTime,
+                                 nargs = 1,
+                                 help = 'add filter for map mtime: must be before given date/time')
+        self.parser.add_argument('-a', '--time-after',
+                                 type = parseDateTime,
+                                 nargs = 1,
+                                 help = 'add filter for map mtime: must be at or after given date/time')
 
     def parse(self):
         self.args = self.parser.parse_args()
@@ -785,6 +825,11 @@ class Commandline:
             for n in self.args.filename:
                 Filter.filenames = Filter.filenames + [n[0]]
             Filter.validate()
+        if self.args.time_before != None:
+            Filter.time_before = self.args.time_before[0]
+        if self.args.time_after != None:
+            Filter.time_after = self.args.time_after[0]
+        print(self.args)
         return self.args.operation
 
 ##############################################################################
