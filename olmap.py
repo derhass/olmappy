@@ -102,13 +102,13 @@ class MapType(enum.IntEnum):
         return desc
 
     @classmethod
-    def getFromDesc(cls, desc):
+    def MapTypeString(cls, desc):
         t = desc.casefold()
         for m in list(cls):
             d = m.getDesc().casefold()
             if d == t:
                 return m
-        raise OlmappyParseError('Map type ' +desc + ' can\'t be parsed')
+        raise ValueError('Map type ' +desc + ' can\'t be parsed')
 
 ##############################################################################
 # utility functions                                                          #
@@ -205,7 +205,7 @@ class MapManager:
                         raise OlmappyValidationError('LEVEL without a type')
                     if 'name' not in l:
                         raise OlmappyValidationError('LEVEL without a name')
-                    mt = MapType.getFromDesc(l['type'])
+                    mt = MapType.MapTypeString(l['type'])
                     if 'types' not in m:
                         m['types'] = mt
                     else:
@@ -612,10 +612,60 @@ class remoteMapManager(MapManager):
 
 class MapFilter:
     def __init__(self):
-        self.name = None
+        self.names = []
+        self.filenames = []
+        self.types = 0
+
+    @staticmethod
+    def validateStringFilter(filterList):
+        if not Config.settings['filterCaseSensitive']:
+            for i in range(0,len(filterList)):
+                filterList[i] = filterList[i].casefold()
+
+    @staticmethod
+    def inString(filterList, s):
+        if len(filterList) < 1:
+            return True
+        sc = s if Config.settings['filterCaseSensitive'] else s.casefold()
+        for f in filterList:
+            if f in sc:
+                return True
+        return False
+
+    @staticmethod
+    def inStringList(filterList, sList):
+        if len(sList) < 1:
+            return False
+        if len(filterList) < 1:
+            return True
+        for s in sList:
+            if MapFilter.inString(filterList, s):
+                return True
+        return False
+
+    def validate(self):
+        self.validateStringFilter(self.names)
+        self.validateStringFilter(self.filenames)
 
     def apply(self, m):
-        # TODO: implement filtering
+        if self.types != 0:
+            if (m['types'] & self.types) == 0:
+                return False
+            if len(self.names) > 0:
+                found = False
+                for l in m['levels']:
+                    t = MapType.MapTypeString(l['type'])
+                    if (t & self.types) == t:
+                        if self.inString(self.names, l['name']):
+                            found = True
+                            break
+                if not found:
+                    return False
+        else:
+            if not self.inStringList(self.names, m['names']):
+                return False
+        if not self.inString(self.filenames, m['filename']):
+            return False
         return True
 
 ##############################################################################
@@ -630,6 +680,7 @@ class Settings:
         self.settings['mapServerListURL'] = '/data/all.json'
         self.settings['logLevel'] = LogLevel.INFO
         self.settings['filenameCaseSensitive'] = False
+        self.settings['filterCaseSensitive'] = False
         self.settings['removeUnknownMaps'] = False
         self.settings['autoImport'] = True
         self.settings['configFile'] = os.getenv('HOME', '.') +  '/.config/olmappy.json'
@@ -699,9 +750,22 @@ class Commandline:
                                  help = 'the operation to execute')
         self.parser.add_argument('-s', '--set',
                                  nargs = 2,
-                                 metavar = ('$NAME', '$VALUE'),
+                                 metavar = ('NAME', 'VALUE'),
                                  action = 'append',
-                                 help = 'set configuration $NAME to $VALUE')
+                                 help = 'set configuration option NAME to VALUE')
+        self.parser.add_argument('-n', '--name',
+                                 nargs = 1,
+                                 action = 'append',
+                                 help = 'add filter for map name')
+        self.parser.add_argument('-f', '--filename',
+                                 nargs = 1,
+                                 action = 'append',
+                                 help = 'add filter for map filename')
+        self.parser.add_argument('-t', '--type',
+                                 type = MapType.MapTypeString,
+                                 nargs = 1,
+                                 action = 'append',
+                                 help = 'add filter for map type')
 
     def parse(self):
         self.args = self.parser.parse_args()
@@ -709,6 +773,18 @@ class Commandline:
             for s in self.args.set:
                 Config.settings[s[0]]=s[1]
             Config.validateSettings()
+        if self.args.type != None:
+            for t in self.args.type:
+                Filter.types = Filter.types | t[0]
+            Filter.validate()
+        if self.args.name != None:
+            for n in self.args.name:
+                Filter.names = Filter.names + [n[0]]
+            Filter.validate()
+        if self.args.filename != None:
+            for n in self.args.filename:
+                Filter.filenames = Filter.filenames + [n[0]]
+            Filter.validate()
         return self.args.operation
 
 ##############################################################################
