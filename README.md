@@ -29,6 +29,8 @@ optional arguments:
   -a DATETIME, --time-after DATETIME
                         add filter for map mtime: must be at or after given
                         DATETIME
+  -H, --hidden          add filter: only apply to hidden maps
+  -U, --unhidden        add filter: only apply to not hidden maps
   -A, --all             for HIDE or UNHIDE operations, when no filter is
                         specified: really apply to ALL maps
 ```
@@ -64,9 +66,10 @@ Use `WRITECONFIG` to generate the initial config file, and edit the values as yo
 * The filters `--name` or `--filename` accept strings and will match any substring in the map name / map filename.
 * The `--type` filter can be `SP`, `MP`, or `CM` for Single-Player, Multi-Player, or Challene-Mode maps, respectively. The case of the letters does not matter. Note that a single map file can and typically does contain maps for different types. If the filter matches any type of such an archive file, it will apply to the whole file, not the sub-maps in it.
 * The `--time-before` and `--time-after` filters take a date and time in the form `YEAR-MONTH-DAY HOUR:MINUTE:SECOND` or `YEAR-MONTH-DAY` (for midnight at that point in time).
+* The `--hidden` and `--unhidden` filters select only hidden or unhidden maps, respectively.
 * The `--all` option must be given for `HIDE` or `UNHIDE` operations if you otherwise did not specify any filters and what to operate on all maps.
 
-If multiple filters of the same category are combined, the are treated as an `OR` operation. The time filters cannot be specified multiple times, the last one of each kind is effective.
+If multiple filters of the same category are combined, the are treated as an `OR` operation. The time and hidden/unhidden filters cannot be specified multiple times, the last one of each kind is effective.
 
 #### EXAMPLES:
 

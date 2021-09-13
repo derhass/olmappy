@@ -129,7 +129,7 @@ def mapTime(m):
     return time.strftime('%Y-%m-%d %H:%M:%S', t)
 
 def mapDesc(m):
-    desc = MapType.getCombinedDesc(m['types']) + ' "' + m['filename'] + '": ['
+    desc = MapType.getCombinedDesc(m['types']) + ' (' + (' ' if m['hidden'] > 0 else '*') + ')' + ' "' + m['filename'] + '": ['
     cnt = 0
     for n in m['names']:
         if cnt > 0:
@@ -691,6 +691,8 @@ class MapFilter:
         self.types = 0
         self.time_before = None
         self.time_after = None
+        self.hidden = False
+        self.unhidden = False
         self.explicitApplyToAll = False
 
     @staticmethod
@@ -761,6 +763,10 @@ class MapFilter:
                 return False
         if self.time_after != None:
             if m['mtime'] < self.time_after:
+                return False
+        if self.hidden and (m['hidden'] < 1):
+                return False
+        if self.unhidden and (m['hidden'] > 0):
                 return False
         return True
 
@@ -881,6 +887,12 @@ class Commandline:
                                  metavar = 'DATETIME',
                                  nargs = 1,
                                  help = 'add filter for map mtime: must be at or after given DATETIME')
+        self.parser.add_argument('-H', '--hidden',
+                                 action = 'store_true',
+                                 help = 'add filter: only apply to hidden maps')
+        self.parser.add_argument('-U', '--unhidden',
+                                 action = 'store_true',
+                                 help = 'add filter: only apply to not hidden maps')
         self.parser.add_argument('-A', '--all',
                                  action = 'store_true',
                                  help = 'for HIDE or UNHIDE operations, when no filter is specified: really apply to ALL maps')
@@ -904,23 +916,20 @@ class Commandline:
         if self.args.type != None:
             for t in self.args.type:
                 Filter.types = Filter.types | t[0]
-            Filter.validate()
         if self.args.name != None:
             for n in self.args.name:
                 Filter.names = Filter.names + [n[0]]
-            Filter.validate()
         if self.args.filename != None:
             for n in self.args.filename:
                 Filter.filenames = Filter.filenames + [n[0]]
-            Filter.validate()
         if self.args.time_before != None:
             Filter.time_before = self.args.time_before[0]
-            Filter.validate()
         if self.args.time_after != None:
             Filter.time_after = self.args.time_after[0]
-            Filter.validate()
-        if self.args.all:
-            Filter.explicitApplyToAll = True
+        Filter.hidden = self.args.hidden
+        Filter.unhidden = self.args.unhidden
+        Filter.explicitApplyToAll = self.args.all
+        Filter.validate()
         return self.args.operation
 
 ##############################################################################
