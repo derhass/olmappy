@@ -114,12 +114,20 @@ class MapType(enum.IntEnum):
 # utility functions                                                          #
 ##############################################################################
 
+
+def stringAsBool(s):
+    s2 = s.strip().casefold()
+    if s2 in ['true', 'on', 'yes', '1', 'enable', 'enabled']:
+        return True
+    if s2 in ['false', 'off', 'no', '0', 'disable', 'disabled']:
+        return False
+    raise ValueError('cant parse boolean value from ' + s)
+
 def equalFileNames(a, b):
     if Config.settings['filenameCaseSensitive']:
         return (a.casefold() == b.casefold())
     else:
         return (a == b)
-    
 
 def mapName(m):
     return '"' + m['id'] + '/' + m['filename'] + '"'
@@ -795,6 +803,10 @@ class Settings:
         for name, value in newSettings.items():
             self.settings[name] = value
 
+    def validatebool(self, name):
+        if type(self.settings[name]) is str:
+            self.settings[name] = stringAsBool(self.settings[name])
+
     def validateSettings(self):
         if len(self.settings['mapPath']) < 1:
             self.settings['mapPath'] = './'
@@ -802,6 +814,11 @@ class Settings:
         else:
             if self.settings['mapPath'][-1] != '/':
                 self.settings['mapPath'] = self.settings['mapPath'] + '/'
+        self.validatebool('filenameCaseSensitive')
+        self.validatebool('filterCaseSensitive')
+        self.validatebool('autoImport')
+        if type(self.settings['logLevel']) is str:
+            self.settings['logLevel'] = int(self.settings['logLevel'])
 
     def load(self, configFile = None, errorOk = True):
         newSettings = {}
