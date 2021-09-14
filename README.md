@@ -56,7 +56,7 @@ The following configuration values are present:
 * `mapServerListURL`: The URL of the JSON map list on the server, default: `/data/all.json`.
 * `logLevel`: Controls the verbosity from 0 (only errors) to 3 (debug messages), default: `2` (information).
 * `filenameCaseSensitive`: Treat filenames as case sensitive, default: `False` for compatibility with Windows.
-* `filterCaseSensitive`: Treat name and filename filters as case sensitive, default: `False` for convenience.
+* `filterCaseSensitive`: Treat filters as case sensitive, default: `False` for convenience. Note that the `--filename` filter will only betreated as case-sensitive if both `filenameCaseSensitive` and `filterCaseSensitive` are enabled.
 * `removeUnknownMaps`: When importing maps, remove all not present on the server, default: `False`.
 * `autoImport`: Before updating, also run import, default: `True`.
 * `configFile`: The path to the configuration file, default: `$HOME/.config/olmappy.json`. This option is not written to the configfile, it is only used via `--set` to specify the location of the config file for loading / writing.

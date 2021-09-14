@@ -694,37 +694,41 @@ class MapFilter:
         self.hidden = False
         self.unhidden = False
         self.explicitApplyToAll = False
+        self.filterCaseSensitive = False
+        self.filenameCaseSensitive = False
 
     @staticmethod
-    def validateStringFilter(filterList):
-        if not Config.settings['filterCaseSensitive']:
+    def validateStringFilter(filterList, caseSensitive):
+        if not caseSensitive:
             for i in range(0,len(filterList)):
                 filterList[i] = filterList[i].casefold()
 
     @staticmethod
-    def inString(filterList, s):
+    def inString(filterList, s, caseSensitive):
         if len(filterList) < 1:
             return True
-        sc = s if Config.settings['filterCaseSensitive'] else s.casefold()
+        sc = s if caseSensitive else s.casefold()
         for f in filterList:
             if f in sc:
                 return True
         return False
 
     @staticmethod
-    def inStringList(filterList, sList):
+    def inStringList(filterList, sList, caseSensitive):
         if len(sList) < 1:
             return False
         if len(filterList) < 1:
             return True
         for s in sList:
-            if MapFilter.inString(filterList, s):
+            if MapFilter.inString(filterList, s, caseSensitive):
                 return True
         return False
 
     def validate(self):
-        self.validateStringFilter(self.names)
-        self.validateStringFilter(self.filenames)
+        self.filterCaseSensitive = Config.settings['filterCaseSensitive']
+        self.filenameCaseSensitive = Config.settings['filenameCaseSensitive'] and self.filterCaseSensitive
+        self.validateStringFilter(self.names, self.filterCaseSensitive)
+        self.validateStringFilter(self.filenames, self.filenameCaseSensitive)
 
     def isEmpty(self):
         if len(self.names) > 0:
@@ -748,15 +752,15 @@ class MapFilter:
                 for l in m['levels']:
                     t = MapType.MapTypeString(l['type'])
                     if (t & self.types) == t:
-                        if self.inString(self.names, l['name']):
+                        if self.inString(self.names, l['name'], self.filterCaseSensitive):
                             found = True
                             break
                 if not found:
                     return False
         else:
-            if not self.inStringList(self.names, m['names']):
+            if not self.inStringList(self.names, m['names'], self.filterCaseSensitive):
                 return False
-        if not self.inString(self.filenames, m['filename']):
+        if not self.inString(self.filenames, m['filename'], self.filenameCaseSensitive):
             return False
         if self.time_before != None:
             if m['mtime'] >= self.time_before:
