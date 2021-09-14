@@ -807,6 +807,10 @@ class Settings:
         if type(self.settings[name]) is str:
             self.settings[name] = stringAsBool(self.settings[name])
 
+    def validateint(self, name):
+        if type(self.settings[name]) is str:
+            self.settings[name] = int(self.settings[name])
+
     def validateSettings(self):
         if len(self.settings['mapPath']) < 1:
             self.settings['mapPath'] = './'
@@ -817,8 +821,7 @@ class Settings:
         self.validatebool('filenameCaseSensitive')
         self.validatebool('filterCaseSensitive')
         self.validatebool('autoImport')
-        if type(self.settings['logLevel']) is str:
-            self.settings['logLevel'] = int(self.settings['logLevel'])
+        self.validateint('logLevel')
 
     def load(self, configFile = None, errorOk = True):
         newSettings = {}
