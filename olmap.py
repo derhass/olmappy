@@ -1197,7 +1197,7 @@ class Commandline:
                                  nargs = 1,
                                  default = 'olmappyExport.json',
                                  help = 'for IMPORT... operations: the filename to read from, default is "%(default)s".')
-        self.parser.add_argument('--version', action='version', version='%(prog)s 1.0')
+        self.parser.add_argument('--version', action='version', version='%(prog)s 1.1-pre')
         self.parser.epilog = 'See README.md for details.'
 
     def parse(self):
