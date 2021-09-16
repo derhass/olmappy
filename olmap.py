@@ -4,6 +4,7 @@
 
 import argparse
 import enum
+import filecmp
 import json
 import os
 import stat
@@ -114,7 +115,6 @@ class MapType(enum.IntEnum):
 # utility functions                                                          #
 ##############################################################################
 
-
 def stringAsBool(s):
     s2 = s.strip().casefold()
     if s2 in ['true', 'on', 'yes', '1', 'enable', 'enabled']:
@@ -188,9 +188,48 @@ class MapManager:
                 return m
         return None
 
+    @staticmethod
+    def RemoveFilenameDecoration(filename):
+        idxLast = filename.rfind('_')
+        if idxLast < 1:
+            return None
+        if filename[idxLast:] == '_hidden' or filename[idxLast:] == '_replaced':
+            name = filename[0:idxLast]
+            idxDot = name.rfind('.')
+            idxId = name.rfind('_')
+            if idxDot < 1:
+                return None
+            if idxId > idxDot:
+                return name[0:idxId]
+            return name
+        else:
+            return None
+
+        f = m['filename']
+        if replaced:
+            f = f + '_' + m['id'] + '_replaced'
+        elif hidden:
+            f = f + '_' + m['id'] + '_hidden'
+        return f
+
+    @staticmethod
+    def GetMapFilenameAs(m, hidden=False, replaced = False):
+        f = m['filename']
+        if replaced:
+            f = f + '_' + m['id'] + '_replaced'
+        elif hidden:
+            f = f + '_' + m['id'] + '_hidden'
+        return f
+
     def findMapByFileName(self, mapFileName):
         for m in self.maps:
             if equalFileNames(m['filename'], mapFileName):
+                return m
+        return None
+
+    def findMapByHiddenFileName(self, mapFileName):
+        for m in self.maps:
+            if equalFileNames(self.GetMapFilenameAs(m, hidden=True), mapFileName):
                 return m
         return None
 
@@ -265,10 +304,15 @@ class MapManager:
         return True
 
     def listMaps(self):
+        cntListed = 0
+        cntFiltered = 0
         for m in self.maps:
             if not Filter.apply(m):
+                cntFiltered = cntFiltered + 1
                 continue
             print(mapDesc(m))
+            cntListed = cntListed + 1
+        Debug('LIST: ' + str(cntListed) + ' found, ' + str(cntFiltered) + ' filtered')
 
 ##############################################################################
 # class for managing the locally stored maps                                 #
@@ -328,20 +372,55 @@ class localMapManager(MapManager):
         except Exception as E:
                 Warn('json map list ' + filename + ' could not be written: ' + str(E))
 
+    def doActualReplace(self, src, dst):
+        try:
+            Warn('Replace File "' + src + '" to "' + dst + '"')
+            target = dst
+            index = 1
+            while True:
+                print('A', target, index)
+                if os.path.isfile(target):
+                    if filecmp.cmp(src, target, shallow=False):
+                        Warn('Target "' + target + '" already exists and is identical, removing source only')
+                        os.remove(src)
+                        print('B', target, index)
+                        break
+                    else:
+                        newtarget = dst + '_' +str(index)
+                        index = index + 1
+                        Warn('Target "' + target + '" already exists, retrying with "' + newtarget + '"')
+                        target = newtarget
+                else:
+                    os.rename(src,target)
+                    print('C', target, index)
+                    break
+        except Exception as E:
+            Warn('Failed to replace "' + src + '" to "' + dst + '": ' + str(E))
+            raise E
+
+
     def RenameMap(self, src, dst):
         try:
-            os.replace(src,dst)
+            os.rename(src,dst)
             Debug('renamed "' + src + '" to "' + dst + '"')
         except Exception as E:
             Warn('Failed to rename "' + src + '" to "' + dst + '": ' + str(E))
             raise E
 
+    def doReplaceFile(self, filename, Id='UNKNOWNID'):
+        try: 
+            basename = os.path.basename(filename) 
+            d = self.mapDir + self.replaceDir
+            b = d + basename + '_' + Id + '_replaced'
+            self.doActualReplace(filename,b)
+        except Exception as E:
+            Warn('Failed to back up replaced file "' + filename + '": ' + str(E))
+
     def doReplaceMap(self, m):
         try: 
-            d = self.mapDir + self.replaceDir
-            a = self.GetMapFilename(m)
-            b = d + m['filename'] + '_replaced_' + m['id']
-            self.RenameMap(a,b)
+            a = self.GetMapPath(m)
+            b = self.GetMapPathAs(m, replaced=True)
+            self.doActualReplace(a,b)
         except Exception as E:
             Warn('Failed to back up replaced map ' + mapName(m) + ': ' + str(E))
 
@@ -361,19 +440,17 @@ class localMapManager(MapManager):
             self.maps.remove(replaceMap)
             return None
 
-    def GetMapFilenameAs(self, m, hidden=False, replaced = False):
+    def GetMapPathAs(self, m, hidden=False, replaced = False):
         d = self.mapDir
-        f = m['filename']
+        f = self.GetMapFilenameAs(m, hidden, replaced)
         if replaced:
             d = d + self.replaceDir
-            f = f + '_' + m['id'] + '_replaced'
         elif hidden:
             d = d + self.hiddenDir
-            f = f + '_' + m['id'] + '_hidden'
         return d + f
 
-    def GetMapFilename(self, m):
-        return self.GetMapFilenameAs(m, hidden=( m['hidden'] > 0), replaced = False)
+    def GetMapPath(self, m):
+        return self.GetMapPathAs(m, hidden=( m['hidden'] > 0), replaced = False)
 
     def validateMap(self, m):
         if not MapManager.validateMap(self, m):
@@ -386,10 +463,25 @@ class localMapManager(MapManager):
             if 'id' not in m:
                 raise OlmappyValidationError('ID part missing')
 
-            filename = self.GetMapFilename(m)
+            filename = self.GetMapPath(m)
             fsize = os.stat(filename).st_size
             if fsize != m['size']:
                 raise OlmappyValidationError('file size differs, expected: '+str(m['size']) + ', got: ' + str(fsize))
+            if m['hidden'] > 0:
+                filename2 = self.GetMapPathAs(m, hidden=False)
+            else:
+                filename2 = self.GetMapPathAs(m, hidden=True)
+            try:
+                fsize2 = os.stat(filename2).st_size
+                Debug('file "' + filename2 + '" present but should be shadowed by "' + filename +'"')
+                if filecmp.cmp(filename, filename2, shallow=False):
+                    Info('deleting "' + filename2 + '" as we already have "' + filename + '"')
+                    os.remove(filename2)
+                else:
+                    Warn('replacing "' + filename2 + '" as we already have "' + filename + '" but files are NOT identical')
+                    self.doReplaceFile(filename2)
+            except FileNotFoundError:
+                pass 
 
         except Exception as E:
             Warn('Failed to validate ' + self.name + ' map ' + str(m) + ': ' + str(E))
@@ -491,74 +583,113 @@ class localMapManager(MapManager):
         Info('UPDATE: ' + str(cntNew) + ' new, ' + str(cntUp) + ' updated, ' + str(cntFail) + ' failed')
         return res
 
-    def importDirFromRemote(self, d, remote, hidden=0):
+    def getUnindexedFiles(self, d, hidden = 0):
+        files = []
         cntAlready = 0
+        cntFail = 0
+        try:
+            for fname in os.listdir(d):
+                fullname = d + fname
+                try:
+                    if equalFileNames(fname, self.indexName):
+                        continue
+                    if stat.S_ISREG(os.lstat(fullname).st_mode):
+                        if hidden > 0:
+                            m = self.findMapByHiddenFileName(fname)
+                        else:
+                            m = self.findMapByFileName(fname)
+                        if m == None:
+                            Debug('file "' + fullname + '" not in index')
+                            files = files + [fname]
+                        else:
+                            Debug('file "' + fullname + '" already in index')
+                            cntAlready = cntAlready + 1
+                    else:
+                        Debug('ignoring non-file "' + fullname + '"')
+                except Exception as E:
+                    Warn('failed to classify "'+fullname+'": ' + str(E))
+                    cntFail = cntFail + 1
+        except Exception as E:
+            Warn('failed to scan directory "'+d+'": ' + str(E))
+        return files, cntAlready, cntFail
+
+    def importDirFromRemote(self, d, remote, hidden=0):
         cntImp = 0
         cntIgn = 0
-        cntFail = 0
         cntReplace = 0
         remote.update()
         if not remote.valid:
             Warn('IMPORT: failed due to not having a valid remote map list')
             return
 
-        for fname in os.listdir(d):
+        files, cntAlready, cntFail = self.getUnindexedFiles(d, hidden)
+        for fname in files:
             fullname = d + fname
             try:
-                if equalFileNames(fname, self.indexName):
-                    continue
-                fname2 = fname # TODO: hidden file name part removal
-                if stat.S_ISREG(os.lstat(fullname).st_mode):
-                    m = self.findMapByFileName(fname2)
-                    if m == None:
-                        Debug('IMPORT: file "' + fullname + '" not yet known')
-                        newMap = remote.findMapByFileName(fname2)
-                        if newMap != None:
-                            if Filter.apply(newMap) == None:
-                                newMap = None
-                        if newMap == None:
-                            text = 'IMPORT: file "' + fullname + '" not on remote map list'
-                            if Config.settings['removeUnknownMaps']:
-                                try:
-                                    newMap = {}
-                                    newMap['id'] = 'UNKNOWNID'
-                                    newMap['filename'] = fname
-                                    newMap['hidden'] = hidden
-                                    self.doReplaceMap(newMap)
-                                    cntReplace = cntReplace + 1
-                                except Exception as E:
-                                    Warn(text + ', FAILED to remove to replaced map section')
-                                    cntFail = cntFail + 1
-                            else:
-                                Info(text + ', ignoring')
-                                cntIgn = cntIgn + 1
-                        else:
-                            newMap['hidden'] = hidden
-                            if self.validateMap(newMap):
-                                self.maps = self.maps + [newMap]
-                                cntImp = cntImp + 1
-                                Info('IMPORT: file "' + fullname + '" imported')
-                            else:
-                                Warn('IMPORT: file "' + fullname + '" did not match info from server')
-                                cntMismatch = cntMismatch + 1
-
-                    else:
-                        Debug('IMPORT: file "' + fullname + '" already in index')
-                        cntAlready = cntAlready + 1
+                Debug('IMPORT: file "' + fullname + '" not yet known')
+                if hidden>0:
+                    fname2 = self.RemoveFilenameDecoration(fname)
                 else:
-                    Debug('IMPORT: ignoring non-file ' + fullname)
+                    fname2 = fname
+                newMap = remote.findMapByFileName(fname2)
+                if newMap != None:
+                    if Filter.apply(newMap) == None:
+                        newMap = None
+                if newMap == None:
+                    text = 'IMPORT: file "' + fullname + '" not on remote map list'
+                    if Config.settings['removeUnknownMaps']:
+                        try:
+                            newMap = {}
+                            newMap['id'] = 'UNKNOWNID'
+                            newMap['filename'] = fname
+                            newMap['hidden'] = hidden
+                            self.doReplaceMap(newMap)
+                            cntReplace = cntReplace + 1
+                        except Exception as E:
+                            Warn(text + ', FAILED to remove to replaced map section')
+                            cntFail = cntFail + 1
+                    else:
+                        Info(text + ', ignoring')
+                        cntIgn = cntIgn + 1
+                else:
+                    newMap['hidden'] = hidden
+                    if self.validateMap(newMap):
+                        self.maps = self.maps + [newMap]
+                        cntImp = cntImp + 1
+                        Info('IMPORT: file "' + fullname + '" imported')
+                    else:
+                        Warn('IMPORT: file "' + fullname + '" did not match info from server')
+                        cntMismatch = cntMismatch + 1
             except Exception as E:
                 Warn('IMPORT: failed to import "'+fullname+'": ' + str(E))
                 cntFail = cntFail + 1
-        Info('IMPORT: "' + d + '": ' + str(cntImp) + ' imported, ' + str(cntAlready) + ' already indexed, ' + str(cntIgn) + ' ignored, ' + str(cntReplace) + ' replaced, ' + str(cntFail) + ' failed to import')
+        Debug('IMPORT: directory "' + d + '": ' + str(cntImp) + ' imported, ' + str(cntAlready) + ' already indexed, ' + str(cntIgn) + ' ignored, ' + str(cntReplace) + ' replaced, ' + str(cntFail) + ' failed to import')
+        return cntAlready, cntImp, cntIgn, cntReplace, cntFail
+
 
     def importFromRemote(self, remote):
-        self.importDirFromRemote(self.mapDir, remote)
-        #TODO: import hidden!!!!
+        cntAlready = 0
+        cntImp = 0
+        cntIgn = 0
+        cntReplace = 0
+        cntFail = 0
+        a,b,c,d,e = self.importDirFromRemote(self.mapDir, remote)
+        cntAlready = cntAlready + a
+        cntImp = cntImp + b
+        cntIgn = cntIgn + c
+        cntReplace = cntReplace + d
+        cntFail = cntFail + e
+        a,b,c,d,e = self.importDirFromRemote(self.mapDir + self.hiddenDir, remote, 1)
+        cntAlready = cntAlready + a
+        cntImp = cntImp + b
+        cntIgn = cntIgn + c
+        cntReplace = cntReplace + d
+        cntFail = cntFail + e
+        Info('IMPORT: ' + str(cntImp) + ' imported, ' + str(cntAlready) + ' already indexed, ' + str(cntIgn) + ' ignored, ' + str(cntReplace) + ' replaced, ' + str(cntFail) + ' failed to import')
 
     def hideMap(self, m, doHide = True):
-        src = self.GetMapFilename(m)
-        dst = self.GetMapFilenameAs(m, hidden=doHide)
+        src = self.GetMapPath(m)
+        dst = self.GetMapPathAs(m, hidden=doHide)
         if src != dst:
             self.RenameMap(src, dst)
         m['hidden'] = 1 if doHide else 0
@@ -589,6 +720,11 @@ class localMapManager(MapManager):
                 cntFail = cntFail + 1
         Info(name + ': ' + str(cntHidden) + ' ' + state.lower()+ ', ' + str(cntAlready) + ' already ' + state.lower() + ', ' + str(cntIgn) + ' unchanged, ' + str(cntFail) + ' failed to ' +name.lower())
 
+    def listIgnored(self):
+        files, cntAlready, cntFail = self.getUnindexedFiles(self.mapDir)
+        for fname in files:
+            print('"' + fname + '"')
+        Debug('LISTIGNORED: ' + str(len(files)) + ' ignored, ' + str(cntAlready) + ' indexed, ' + str(cntFail) + ' failed')
 
 ##############################################################################
 # class for managing the remote map server                                   #
@@ -961,7 +1097,7 @@ class Commandline:
         return self.args.operation
 
 ##############################################################################
-# operation conrtol                                                         #
+# operation control                                                          #
 ##############################################################################
 
 class Operation(enum.IntEnum):
@@ -973,6 +1109,7 @@ class Operation(enum.IntEnum):
     UNHIDE = 6
     WRITECONFIG = 7
     SHOWCONFIG = 8
+    LISTIGNORED = 9
 
     def apply(self):
         operations = [
@@ -984,7 +1121,8 @@ class Operation(enum.IntEnum):
             self.doHide,
             self.doUnhide,
             self.doWriteConfig,
-            self.doShowConfig
+            self.doShowConfig,
+            self.doListIgnored
         ]
 
         res = 999
@@ -1064,6 +1202,12 @@ class Operation(enum.IntEnum):
 
     def doShowConfig(self):
         Config.show()
+        return 0
+
+    def doListIgnored(self):
+        local = localMapManager()
+        local.update()
+        local.listIgnored()
         return 0
 
 ##############################################################################
