@@ -1,0 +1,1089 @@
+[
+    {
+        "url": "/files/5b5f49c02b3c807357f7f8e7127a742e/mp_scheme.zip",
+        "mtime": 1549800565,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SCHEME"
+            }
+        ],
+        "size": 3403632,
+        "id": "5b5f49c02b3c807357f7f8e7127a742e",
+        "filename_encoded": "mp_scheme.zip",
+        "filename": "mp_scheme.zip",
+        "names": [
+            "SCHEME"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/139f82612087dc1e99749b9764f49066/Twinspire%20V2.zip",
+        "mtime": 1565347742,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "TWINSPIRE V2"
+            }
+        ],
+        "size": 20130330,
+        "id": "139f82612087dc1e99749b9764f49066",
+        "filename_encoded": "Twinspire%20V2.zip",
+        "filename": "Twinspire V2.zip",
+        "names": [
+            "TWINSPIRE V2"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/0ae60f46bf2522bd73db16098247517a/Dominion_MP_1.1.zip",
+        "mtime": 1546794818,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "DOMINION MP 1.1"
+            }
+        ],
+        "size": 2257400,
+        "id": "0ae60f46bf2522bd73db16098247517a",
+        "filename_encoded": "Dominion_MP_1.1.zip",
+        "filename": "Dominion_MP_1.1.zip",
+        "names": [
+            "DOMINION MP 1.1"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/debdca6ec8e9dd0d64276e3d0f34a332/silver.zip",
+        "mtime": 1598110789,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SILVER"
+            }
+        ],
+        "size": 631842,
+        "id": "debdca6ec8e9dd0d64276e3d0f34a332",
+        "filename_encoded": "silver.zip",
+        "filename": "silver.zip",
+        "names": [
+            "SILVER"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/a33c90352ca19ed4a7a7f985fc6bac18/Isotoxin.zip",
+        "mtime": 1622882988,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "ISOTOXIN"
+            }
+        ],
+        "size": 4173261,
+        "id": "a33c90352ca19ed4a7a7f985fc6bac18",
+        "filename_encoded": "Isotoxin.zip",
+        "filename": "Isotoxin.zip",
+        "names": [
+            "ISOTOXIN"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/51d65f3511cd4e1e2faaab0486928640/Minefort_v1.1.zip",
+        "mtime": 1567771582,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "MINEFORT"
+            },
+            {
+                "type": "mp",
+                "name": "MINEFORT"
+            }
+        ],
+        "size": 2056012,
+        "id": "51d65f3511cd4e1e2faaab0486928640",
+        "filename_encoded": "Minefort_v1.1.zip",
+        "filename": "Minefort_v1.1.zip",
+        "names": [
+            "MINEFORT"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/fe5902d55a0b9965c0d069ff1cb6a661/Casual.zip",
+        "mtime": 1585912049,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "CASUAL"
+            },
+            {
+                "type": "mp",
+                "name": "CASUAL"
+            }
+        ],
+        "size": 10971358,
+        "id": "fe5902d55a0b9965c0d069ff1cb6a661",
+        "filename_encoded": "Casual.zip",
+        "filename": "Casual.zip",
+        "names": [
+            "CASUAL"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/9c1278e7f70bf7d061e5c208f7b86a14/Vamped.zip",
+        "mtime": 1605402653,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "VAMPED"
+            },
+            {
+                "type": "mp",
+                "name": "VAMPED"
+            }
+        ],
+        "size": 1495787,
+        "id": "9c1278e7f70bf7d061e5c208f7b86a14",
+        "filename_encoded": "Vamped.zip",
+        "filename": "Vamped.zip",
+        "names": [
+            "VAMPED"
+        ],
+        "types": 5,
+        "hidden": 1
+    },
+    {
+        "url": "/files/88c41178308f830af4dd7b129435009a/cage_mp.zip",
+        "mtime": 1553103617,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "CAGE"
+            }
+        ],
+        "size": 6821146,
+        "id": "88c41178308f830af4dd7b129435009a",
+        "filename_encoded": "cage_mp.zip",
+        "filename": "cage_mp.zip",
+        "names": [
+            "CAGE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/dac7c419f484ee041a765c0fd10a5f31/superhappyfunland%20v1.1.zip",
+        "mtime": 1597412925,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "SUPER HAPPY FUN LAND"
+            },
+            {
+                "type": "mp",
+                "name": "SUPER HAPPY FUN LAND V1.1"
+            }
+        ],
+        "size": 2670260,
+        "id": "dac7c419f484ee041a765c0fd10a5f31",
+        "filename_encoded": "superhappyfunland%20v1.1.zip",
+        "filename": "superhappyfunland v1.1.zip",
+        "names": [
+            "SUPER HAPPY FUN LAND",
+            "SUPER HAPPY FUN LAND V1.1"
+        ],
+        "types": 5,
+        "hidden": 1
+    },
+    {
+        "url": "/files/a5100ef34bdd5cd3748367d9869c5bed/Mercer%20Point%20MP.zip",
+        "mtime": 1603144408,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "MERCER POINT MP"
+            }
+        ],
+        "size": 44868499,
+        "id": "a5100ef34bdd5cd3748367d9869c5bed",
+        "filename_encoded": "Mercer%20Point%20MP.zip",
+        "filename": "Mercer Point MP.zip",
+        "names": [
+            "MERCER POINT MP"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/0311b20760b15fb11275c1b86f6f65dd/Kataclysmica.zip",
+        "mtime": 1561119500,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "KATACLYSMICA"
+            },
+            {
+                "type": "mp",
+                "name": "KATACLYSMICA"
+            }
+        ],
+        "size": 5956316,
+        "id": "0311b20760b15fb11275c1b86f6f65dd",
+        "filename_encoded": "Kataclysmica.zip",
+        "filename": "Kataclysmica.zip",
+        "names": [
+            "KATACLYSMICA"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/08b9191192563b2f53e3118123c9570e/Death_Race.zip",
+        "mtime": 1587104762,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "DEATH RACE"
+            }
+        ],
+        "size": 711821,
+        "id": "08b9191192563b2f53e3118123c9570e",
+        "filename_encoded": "Death_Race.zip",
+        "filename": "Death_Race.zip",
+        "names": [
+            "DEATH RACE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/d075f11482efcf9d939bb9db9af02162/Xenopulse.zip",
+        "mtime": 1595298378,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "XENOPULSE"
+            }
+        ],
+        "size": 10983833,
+        "id": "d075f11482efcf9d939bb9db9af02162",
+        "filename_encoded": "Xenopulse.zip",
+        "filename": "Xenopulse.zip",
+        "names": [
+            "XENOPULSE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/820555578f893952eeb876ffbfaabf0d/racketeer.zip",
+        "mtime": 1580324191,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "RACKETEER"
+            }
+        ],
+        "size": 24825469,
+        "id": "820555578f893952eeb876ffbfaabf0d",
+        "filename_encoded": "racketeer.zip",
+        "filename": "racketeer.zip",
+        "names": [
+            "RACKETEER"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/02cd21878246fe13988f9dd7cd22faf6/I%20Don%27t%20Care%20v1.1.zip",
+        "mtime": 1603779423,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "I DON'T CARE V1.1"
+            },
+            {
+                "type": "mp",
+                "name": "I DON'T CARE V1.1"
+            }
+        ],
+        "size": 2017946,
+        "id": "02cd21878246fe13988f9dd7cd22faf6",
+        "filename_encoded": "I%20Don%27t%20Care%20v1.1.zip",
+        "filename": "I Don't Care v1.1.zip",
+        "names": [
+            "I DON'T CARE V1.1"
+        ],
+        "types": 5,
+        "hidden": 1
+    },
+    {
+        "url": "/files/40672910c3e01072d0252ef101c18138/hedgerace.zip",
+        "mtime": 1615264250,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "HEDGERACE"
+            }
+        ],
+        "size": 78936860,
+        "id": "40672910c3e01072d0252ef101c18138",
+        "filename_encoded": "hedgerace.zip",
+        "filename": "hedgerace.zip",
+        "names": [
+            "HEDGERACE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/fc20a2e24f10feb457c6644ff135f35f/Twinspire.zip",
+        "mtime": 1558254682,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "TWINSPIRE"
+            }
+        ],
+        "size": 16482122,
+        "id": "fc20a2e24f10feb457c6644ff135f35f",
+        "filename_encoded": "Twinspire.zip",
+        "filename": "Twinspire.zip",
+        "names": [
+            "TWINSPIRE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/06ba97b832cb6688e7e0325f4e723ec9/Sub_Rosa_v2.zip",
+        "mtime": 1553934359,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SUB ROSA V2"
+            }
+        ],
+        "size": 807951,
+        "id": "06ba97b832cb6688e7e0325f4e723ec9",
+        "filename_encoded": "Sub_Rosa_v2.zip",
+        "filename": "Sub_Rosa_v2.zip",
+        "names": [
+            "SUB ROSA V2"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/3c3898c147f06a311eec54d188bbf4b6/Cronus%20Circuit%20Race.zip",
+        "mtime": 1592251290,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "CRONUS CIRCUIT RACE"
+            }
+        ],
+        "size": 38343006,
+        "id": "3c3898c147f06a311eec54d188bbf4b6",
+        "filename_encoded": "Cronus%20Circuit%20Race.zip",
+        "filename": "Cronus Circuit Race.zip",
+        "names": [
+            "CRONUS CIRCUIT RACE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/e99ee386091a57449873e22ffb8e7d2a/Infinite%20Abyss%20Race.zip",
+        "mtime": 1616445249,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "INFINITE ABYSS RACE"
+            }
+        ],
+        "size": 25801535,
+        "id": "e99ee386091a57449873e22ffb8e7d2a",
+        "filename_encoded": "Infinite%20Abyss%20Race.zip",
+        "filename": "Infinite Abyss Race.zip",
+        "names": [
+            "INFINITE ABYSS RACE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/5d922d382a02f670102ab5af014b12cf/Minefort_CTF.zip",
+        "mtime": 1580922648,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "MINEFORT CTF"
+            }
+        ],
+        "size": 2689606,
+        "id": "5d922d382a02f670102ab5af014b12cf",
+        "filename_encoded": "Minefort_CTF.zip",
+        "filename": "Minefort_CTF.zip",
+        "names": [
+            "MINEFORT CTF"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/ffcc2a86c55254a5b26f35e376562e6e/jega.zip",
+        "mtime": 1558177242,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "JEGA"
+            }
+        ],
+        "size": 25347379,
+        "id": "ffcc2a86c55254a5b26f35e376562e6e",
+        "filename_encoded": "jega.zip",
+        "filename": "jega.zip",
+        "names": [
+            "JEGA"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/956db0150cb7779877a5a40238f63542/cm_scheme.zip",
+        "mtime": 1548762314,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "SCHEME"
+            }
+        ],
+        "size": 3086938,
+        "id": "956db0150cb7779877a5a40238f63542",
+        "filename_encoded": "cm_scheme.zip",
+        "filename": "cm_scheme.zip",
+        "names": [
+            "SCHEME"
+        ],
+        "types": 2,
+        "hidden": 1
+    },
+    {
+        "url": "/files/8de3a0aea2791ead8d130020da814720/cm_TBDB.zip",
+        "mtime": 1536354461,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "TBDB"
+            }
+        ],
+        "size": 5903428,
+        "id": "8de3a0aea2791ead8d130020da814720",
+        "filename_encoded": "cm_TBDB.zip",
+        "filename": "cm_TBDB.zip",
+        "names": [
+            "TBDB"
+        ],
+        "types": 2,
+        "hidden": 1
+    },
+    {
+        "url": "/files/33c7f858dc8c6d6e970868a5b3097c10/cm_slipstream.zip",
+        "mtime": 1547394678,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "SLIPSTREAM"
+            }
+        ],
+        "size": 3684893,
+        "id": "33c7f858dc8c6d6e970868a5b3097c10",
+        "filename_encoded": "cm_slipstream.zip",
+        "filename": "cm_slipstream.zip",
+        "names": [
+            "SLIPSTREAM"
+        ],
+        "types": 2,
+        "hidden": 1
+    },
+    {
+        "url": "/files/14207511960bdb9d1803f954dc654e5a/mp_slipstream.zip",
+        "mtime": 1549800567,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SLIPSTREAM"
+            }
+        ],
+        "size": 3379928,
+        "id": "14207511960bdb9d1803f954dc654e5a",
+        "filename_encoded": "mp_slipstream.zip",
+        "filename": "mp_slipstream.zip",
+        "names": [
+            "SLIPSTREAM"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/2f6568ebf2c36971a2aee02fd15ef821/Spar.zip",
+        "mtime": 1597795935,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SPAR"
+            }
+        ],
+        "size": 4687331,
+        "id": "2f6568ebf2c36971a2aee02fd15ef821",
+        "filename_encoded": "Spar.zip",
+        "filename": "Spar.zip",
+        "names": [
+            "SPAR"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/d48fa21d167a6089828c4cc4dfd2e137/Combustion%20Race.zip",
+        "mtime": 1592415019,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "COMBUSTION RACE"
+            }
+        ],
+        "size": 19740668,
+        "id": "d48fa21d167a6089828c4cc4dfd2e137",
+        "filename_encoded": "Combustion%20Race.zip",
+        "filename": "Combustion Race.zip",
+        "names": [
+            "COMBUSTION RACE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/9b00cd768917a2a12cce305811b87006/Super_Happy_Fun_Land.zip",
+        "mtime": 1597403737,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SUPER HAPPY FUN LAND"
+            }
+        ],
+        "size": 3438225,
+        "id": "9b00cd768917a2a12cce305811b87006",
+        "filename_encoded": "Super_Happy_Fun_Land.zip",
+        "filename": "Super_Happy_Fun_Land.zip",
+        "names": [
+            "SUPER HAPPY FUN LAND"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/a8404b60ec13b17f4a075db2ae9030d7/cage_cm.zip",
+        "mtime": 1553103615,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "CAGE"
+            }
+        ],
+        "size": 7164232,
+        "id": "a8404b60ec13b17f4a075db2ae9030d7",
+        "filename_encoded": "cage_cm.zip",
+        "filename": "cage_cm.zip",
+        "names": [
+            "CAGE"
+        ],
+        "types": 2,
+        "hidden": 1
+    },
+    {
+        "url": "/files/2ec359291ee7f3f08a1531ab48863e0a/long-MB.zip",
+        "mtime": 1556831260,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "LONG-MB"
+            }
+        ],
+        "size": 828952,
+        "id": "2ec359291ee7f3f08a1531ab48863e0a",
+        "filename_encoded": "long-MB.zip",
+        "filename": "long-MB.zip",
+        "names": [
+            "LONG-MB"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/af235f446b22d6d9d38034170cf19846/Drone.zip",
+        "mtime": 1558422504,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "DRONE"
+            },
+            {
+                "type": "mp",
+                "name": "DRONE"
+            }
+        ],
+        "size": 11165338,
+        "id": "af235f446b22d6d9d38034170cf19846",
+        "filename_encoded": "Drone.zip",
+        "filename": "Drone.zip",
+        "names": [
+            "DRONE"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/12e4a6504deb8a786185afc5a7aecc34/Riber%20Control.zip",
+        "mtime": 1579627428,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "RIBER CONTROL"
+            }
+        ],
+        "size": 32505709,
+        "id": "12e4a6504deb8a786185afc5a7aecc34",
+        "filename_encoded": "Riber%20Control.zip",
+        "filename": "Riber Control.zip",
+        "names": [
+            "RIBER CONTROL"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/94fc5d82b88c7b6fc495c25230e1fd40/KrusticPark.zip",
+        "mtime": 1565026144,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "KRUSTICPARK"
+            },
+            {
+                "type": "mp",
+                "name": "KRUSTICPARK"
+            }
+        ],
+        "size": 27680743,
+        "id": "94fc5d82b88c7b6fc495c25230e1fd40",
+        "filename_encoded": "KrusticPark.zip",
+        "filename": "KrusticPark.zip",
+        "names": [
+            "KRUSTICPARK"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/72746ef399117ebc0942c10e62a0e52f/Birds%20Nest.zip",
+        "mtime": 1603696539,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "BIRDS NEST"
+            },
+            {
+                "type": "mp",
+                "name": "BIRDS NEST"
+            }
+        ],
+        "size": 724446,
+        "id": "72746ef399117ebc0942c10e62a0e52f",
+        "filename_encoded": "Birds%20Nest.zip",
+        "filename": "Birds Nest.zip",
+        "names": [
+            "BIRDS NEST"
+        ],
+        "types": 5,
+        "hidden": 1
+    },
+    {
+        "url": "/files/49b4dd625afd2728a090c665d30a1690/Icewolfe_Death_Match.zip",
+        "mtime": 1590926158,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "ICEWOLFE DEATH MATCH"
+            },
+            {
+                "type": "mp",
+                "name": "ICEWOLFE DEATH MATCH"
+            }
+        ],
+        "size": 1781496,
+        "id": "49b4dd625afd2728a090c665d30a1690",
+        "filename_encoded": "Icewolfe_Death_Match.zip",
+        "filename": "Icewolfe_Death_Match.zip",
+        "names": [
+            "ICEWOLFE DEATH MATCH"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/4e0511fb409a4ee0120ee24c0ebd67f8/Contest%20submission%20CM%20pack.zip",
+        "mtime": 1546795522,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "TURNABOUT"
+            },
+            {
+                "type": "cm",
+                "name": "SIMPLICITY"
+            },
+            {
+                "type": "cm",
+                "name": "SIGMA STATION"
+            },
+            {
+                "type": "cm",
+                "name": "CHROMATIC DESTINATION"
+            }
+        ],
+        "size": 23127008,
+        "id": "4e0511fb409a4ee0120ee24c0ebd67f8",
+        "filename_encoded": "Contest%20submission%20CM%20pack.zip",
+        "filename": "Contest submission CM pack.zip",
+        "names": [
+            "TURNABOUT",
+            "SIMPLICITY",
+            "SIGMA STATION",
+            "CHROMATIC DESTINATION"
+        ],
+        "types": 2,
+        "hidden": 1
+    },
+    {
+        "url": "/files/c058942eab21d98b3736fb67a428b0fa/SIGNET.zip",
+        "mtime": 1615317635,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "RACE SIGNET"
+            }
+        ],
+        "size": 67336582,
+        "id": "c058942eab21d98b3736fb67a428b0fa",
+        "filename_encoded": "SIGNET.zip",
+        "filename": "SIGNET.zip",
+        "names": [
+            "RACE SIGNET"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/a1d695d5cac46db7f3a7d68bcecf9aa6/KO.zip",
+        "mtime": 1597385362,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "KO"
+            },
+            {
+                "type": "mp",
+                "name": "KO"
+            }
+        ],
+        "size": 9130632,
+        "id": "a1d695d5cac46db7f3a7d68bcecf9aa6",
+        "filename_encoded": "KO.zip",
+        "filename": "KO.zip",
+        "names": [
+            "KO"
+        ],
+        "types": 5,
+        "hidden": 1
+    },
+    {
+        "url": "/files/2cf3672f72a009459287fb5e2011c35d/Ascent%20preview.zip",
+        "mtime": 1607538384,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "ASCENT PREVIEW"
+            }
+        ],
+        "size": 1488594,
+        "id": "2cf3672f72a009459287fb5e2011c35d",
+        "filename_encoded": "Ascent%20preview.zip",
+        "filename": "Ascent preview.zip",
+        "names": [
+            "ASCENT PREVIEW"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/6089edc096c01aa8a8e17489ace07826/Hover.zip",
+        "mtime": 1592414981,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "HOVER"
+            }
+        ],
+        "size": 1696657,
+        "id": "6089edc096c01aa8a8e17489ace07826",
+        "filename_encoded": "Hover.zip",
+        "filename": "Hover.zip",
+        "names": [
+            "HOVER"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/23701b37706ae12a67c092aeb96c8dad/Devastation.zip",
+        "mtime": 1576161696,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "DEVASTATION"
+            }
+        ],
+        "size": 17007460,
+        "id": "23701b37706ae12a67c092aeb96c8dad",
+        "filename_encoded": "Devastation.zip",
+        "filename": "Devastation.zip",
+        "names": [
+            "DEVASTATION"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/0b49a8b67a4b890d0c06eac482a93fb0/Criss.zip",
+        "mtime": 1585645239,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "CRISS"
+            }
+        ],
+        "size": 2716547,
+        "id": "0b49a8b67a4b890d0c06eac482a93fb0",
+        "filename_encoded": "Criss.zip",
+        "filename": "Criss.zip",
+        "names": [
+            "CRISS"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/637c250dcd0f9e22bf0f1474b58c86ec/Sub_Rosa.zip",
+        "mtime": 1548762312,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SUB ROSA"
+            }
+        ],
+        "size": 1926965,
+        "id": "637c250dcd0f9e22bf0f1474b58c86ec",
+        "filename_encoded": "Sub_Rosa.zip",
+        "filename": "Sub_Rosa.zip",
+        "names": [
+            "SUB ROSA"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/5b3970b96a8ec33263a1d43f562a4b31/D-Day97v1.4.zip",
+        "mtime": 1551130233,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "D-DAY97V1.4"
+            },
+            {
+                "type": "mp",
+                "name": "D-DAY97V1.4"
+            }
+        ],
+        "size": 6714606,
+        "id": "5b3970b96a8ec33263a1d43f562a4b31",
+        "filename_encoded": "D-Day97v1.4.zip",
+        "filename": "D-Day97v1.4.zip",
+        "names": [
+            "D-DAY97V1.4"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/dc169f164ee27894813b8f501926bb33/Slanted.zip",
+        "mtime": 1591902727,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "SLANTED"
+            },
+            {
+                "type": "cm",
+                "name": "SLANTED"
+            },
+            {
+                "type": "mp",
+                "name": "SLANTED"
+            }
+        ],
+        "size": 9258239,
+        "id": "dc169f164ee27894813b8f501926bb33",
+        "filename_encoded": "Slanted.zip",
+        "filename": "Slanted.zip",
+        "names": [
+            "SLANTED"
+        ],
+        "types": 7,
+        "hidden": 1
+    },
+    {
+        "url": "/files/a5f0db8dfdf7fb770495e9eee4913e06/Galatea%20Race.zip",
+        "mtime": 1590067403,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "GALATEA RACE"
+            }
+        ],
+        "size": 21600957,
+        "id": "a5f0db8dfdf7fb770495e9eee4913e06",
+        "filename_encoded": "Galatea%20Race.zip",
+        "filename": "Galatea Race.zip",
+        "names": [
+            "GALATEA RACE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/c75c8eff8ea2d422a4717d71a123f814/I%20Don%27t%20Care.zip",
+        "mtime": 1597942929,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "I DON'T CARE"
+            },
+            {
+                "type": "mp",
+                "name": "I DON'T CARE"
+            }
+        ],
+        "size": 8309569,
+        "id": "c75c8eff8ea2d422a4717d71a123f814",
+        "filename_encoded": "I%20Don%27t%20Care.zip",
+        "filename": "I Don't Care.zip",
+        "names": [
+            "I DON'T CARE"
+        ],
+        "types": 5,
+        "hidden": 1
+    },
+    {
+        "url": "/files/04e66d965c55e0aeb5d100954a008625/Death_Race_V2.zip",
+        "mtime": 1590067408,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "DEATH RACE V2"
+            }
+        ],
+        "size": 721904,
+        "id": "04e66d965c55e0aeb5d100954a008625",
+        "filename_encoded": "Death_Race_V2.zip",
+        "filename": "Death_Race_V2.zip",
+        "names": [
+            "DEATH RACE V2"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/2359b6cce060969bb6ad2737a630890f/Burning%20Indika.zip",
+        "mtime": 1546795377,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "BURNING INDIKA"
+            },
+            {
+                "type": "mp",
+                "name": "BURNING INDIKA"
+            }
+        ],
+        "size": 34208915,
+        "id": "2359b6cce060969bb6ad2737a630890f",
+        "filename_encoded": "Burning%20Indika.zip",
+        "filename": "Burning Indika.zip",
+        "names": [
+            "BURNING INDIKA"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/e2127ec3ca5c401c7bc5f62351e858a8/Skybox%20Classic%20Race%20Preview%20v1.0.zip",
+        "mtime": 1614967164,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SKYBOX CLASSIC RACE PREVIEW"
+            }
+        ],
+        "size": 1417714,
+        "id": "e2127ec3ca5c401c7bc5f62351e858a8",
+        "filename_encoded": "Skybox%20Classic%20Race%20Preview%20v1.0.zip",
+        "filename": "Skybox Classic Race Preview v1.0.zip",
+        "names": [
+            "SKYBOX CLASSIC RACE PREVIEW"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/c7494c2b0dc78ea96ab7f895e63c8789/KegpartyU.zip",
+        "mtime": 1550696209,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "KEGPARTY"
+            }
+        ],
+        "size": 4597432,
+        "id": "c7494c2b0dc78ea96ab7f895e63c8789",
+        "filename_encoded": "KegpartyU.zip",
+        "filename": "KegpartyU.zip",
+        "names": [
+            "KEGPARTY"
+        ],
+        "types": 4,
+        "hidden": 1
+    }
+]
