@@ -13,8 +13,8 @@ Manage Overload maps.
 positional arguments:
   operation             the operation to execute, must be one of: IMPORT,
                         UPDATE, LISTLOCAL, LISTREMOTE, HIDE, UNHIDE,
-                        WRITECONFIG, SHOWCONFIG, LISTIGNORED. Default is
-                        UPDATE.
+                        WRITECONFIG, SHOWCONFIG, LISTIGNORED, EXPORTLIST,
+                        HIDEIMPORT. Default is UPDATE.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -38,6 +38,12 @@ optional arguments:
   -U, --unhidden        add filter: only apply to not hidden maps
   -A, --all             for HIDE or UNHIDE operations, when no filter is
                         specified: really apply to ALL maps
+  -E EXPORT_FILE, --export-file EXPORT_FILE
+                        for EXPORT... operations: the filename to write to,
+                        default is "olmappyExport.json".
+  -I IMPORT_FILE, --import-file IMPORT_FILE
+                        for IMPORT... operations: the filename to read from,
+                        default is "olmappyExport.json".
   --version             show program's version number and exit
 ```
 
@@ -53,6 +59,8 @@ The `OPERATION`s are:
 * `WRITECONFIG`: Write the config file. This is useful for initally populating the config file, and may be combined with several `--set` parameters to specify config values.
 * `SHOWCONFIG`: Show the currently effective configuration (taking the config file and all `--set` parameters into account).
 * `LISTIGNORED`: List all un-indexed files in the map directory.
+* `EXPORTLIST`: Export the list of local maps (with potential filters applied) to the file specified by the `--export-file` argument.
+* `HIDEIMPORT`: Import the hidden / unhidden state from a file specified by the `--import-file` argument. Note that `HIDEIMPORT` will hide AND unhide maps from the file, but you can combine it with the `--hidden` or `--unhidden` filters to specifically only hide or unhide maps. The import only applies to maps you locally already have, other maps are ignored. If you later download such a map, you can apply the import file again.
 
 #### CONFIGURATION:
 
@@ -110,6 +118,19 @@ To unhide all currently hidden maps:
 ```
 olmap.py UNHIDE --all
 ```
+
+To export a list of all your currently hidden maps to `myHiddenMaps.json`, use:
+```
+olmap.py EXPORTLIST -E myHiddenMaps.json -H
+```
+
+To import the hidden state again, use:
+```
+olmap.py HIDEIMPORT -I myHiddenMaps.json
+```
+
+Note that this repo comes with a `outdatedMaps.json` wich can be used to hide some maps which were
+superseeded by newer versions.
 
 Have fun,
      derhass

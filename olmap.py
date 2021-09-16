@@ -178,13 +178,19 @@ def parseDateTime(s):
 class MapManager:
     def __init__(self):
         self.maps = []
-        self.vaild = False
+        self.valid = False
         self.name = 'generic'
         self.timestamp = time.time();
 
     def findMapById(self, mapId):
         for m in self.maps:
             if m['id'] == mapId:
+                return m
+        return None
+
+    def findMapByURL(self, mapUrl):
+        for m in self.maps:
+            if m['url'] == mapUrl:
                 return m
         return None
 
@@ -303,16 +309,39 @@ class MapManager:
             return False
         return True
 
-    def listMaps(self):
+    @staticmethod
+    def writeMapList(filename, mapList):
+        try:
+            indexFile = open(file = filename, mode = 'wt', encoding = 'utf-8')
+            try:
+                json.dump(mapList, indexFile, indent=4)
+                Debug('wrote json map list ' + filename + ': ' + str(len(mapList)) + ' entries')
+            except Exception as E:
+                raise OlmappyJSONWriteError('failed to write map list to json file ' + filename + ': ' + str(E)) from E
+        except Exception as E:
+                Warn('json map list ' + filename + ' could not be written: ' + str(E))
+
+    def listMaps(self, doExport=False):
+        name = 'EXPORTLIST' if doExport else 'LIST'
         cntListed = 0
         cntFiltered = 0
+        exported = []
         for m in self.maps:
             if not Filter.apply(m):
                 cntFiltered = cntFiltered + 1
                 continue
-            print(mapDesc(m))
+            if doExport:
+                exported = exported + [m]
+            else:
+                print(mapDesc(m))
             cntListed = cntListed + 1
-        Debug('LIST: ' + str(cntListed) + ' found, ' + str(cntFiltered) + ' filtered')
+        if doExport:
+            self.writeMapList(Cmd.args.export_file[0], exported)
+
+        if doExport:
+           Info(name + ': ' + str(cntListed) + ' exported, ' + str(cntFiltered) + ' not exported')
+        else:
+           Debug(name + ': ' + str(cntListed) + ' found, ' + str(cntFiltered) + ' filtered')
 
 ##############################################################################
 # class for managing the locally stored maps                                 #
@@ -341,36 +370,32 @@ class localMapManager(MapManager):
     def getMapListFileName(self):
         return self.mapDir + self.indexName
 
-    def loadMapList(self):
-        filename = self.getMapListFileName()
+    @staticmethod
+    def loadMapListFile(filename, valid=False):
         try:
             indexFile = open(file = filename, mode = 'rt', encoding = 'utf-8')
             try:
-                self.maps = json.load(indexFile)
-                self.vaild = True
-                Debug('read json map list ' + filename + ': ' + str(len(self.maps)) + ' entries')
+                mapList = json.load(indexFile)
+                valid = True
+                Debug('read json map list ' + filename + ': ' + str(len(mapList)) + ' entries')
             except Exception as E:
                 raise OlmappyParseError('json map list file ' + filename + ' could not be parsed: ' + str(E)) from E
         except OlmappyError as E:
             Warn('json map list ' + filename + ' was corrupted: ' + str(E))
-            self.maps = []
-            self.vaild = True
+            mapList = []
+            valid = True
         except Exception as E:
             Warn('json map list ' + filename + ' could not be read: ' + str(E))
-            self.maps = []
-            self.valid = True
+            mapList = []
+            valid = True
+        return mapList, valid
+
+    def loadMapList(self):
+        filename = self.getMapListFileName()
+        self.maps , self.valid = self.loadMapListFile(filename, self.valid)
 
     def saveMapList(self):
-        filename = self.getMapListFileName()
-        try:
-            indexFile = open(file = filename, mode = 'wt', encoding = 'utf-8')
-            try:
-                json.dump(self.maps, indexFile, indent=4)
-                Debug('wrote json map list ' + filename + ': ' + str(len(self.maps)) + ' entries')
-            except Exception as E:
-                raise OlmappyJSONWriteError('failed to dump map list to json file ' + filename + ': ' + str(E)) from E
-        except Exception as E:
-                Warn('json map list ' + filename + ' could not be written: ' + str(E))
+        self.writeMapList(self.getMapListFileName(), self.maps)
 
     def doActualReplace(self, src, dst):
         try:
@@ -512,7 +537,7 @@ class localMapManager(MapManager):
                     Warn(self.name + ' map ' + mapName(myMap) + ' is already present, ignoring conflicting ' + mapName(m))
         Debug(self.name + ' map list: found ' + str(len(self.maps)) + ' unique entries')
         if len(self.maps) < 1:
-            self.vaild = False
+            self.valid = False
 
     def updateMapFromRemote(self, m, remote):
         myMap = self.findAndReplaceExistingMap(m)
@@ -720,6 +745,78 @@ class localMapManager(MapManager):
                 cntFail = cntFail + 1
         Info(name + ': ' + str(cntHidden) + ' ' + state.lower()+ ', ' + str(cntAlready) + ' already ' + state.lower() + ', ' + str(cntIgn) + ' unchanged, ' + str(cntFail) + ' failed to ' +name.lower())
 
+    def hideImportMaps(self, hideMaps):
+        cntFiltered = 0
+        cntInvalid = 0
+        cntNotPresent = 0
+        cntKept = 0
+        cntHidden = 0
+        cntUnhidden = 0
+        cntFail = 0
+        for m in hideMaps:
+            if not Filter.apply(m):
+                cntFiltered = cntFiltered + 1
+                continue
+            myMap = None
+            if 'url' in m:
+                myMap = self.findMapByURL(m['url'])
+            elif 'id' in m:
+                myMap = self.findMapById(m['id'])
+            elif 'filename' in m:
+                myMap = self.findMapByFileName(m['filename'])
+            else:
+                Warn('HIDEIMPORT: map ' + str(m) + 'lacks a proper identification, ignored as invalid')
+                cntInvalid = cntInvalid + 1
+                continue
+            if myMap == None:
+                Debug('HIDEIMPORT: map ' + mapName(m) + ' is not locally available, ignored')
+                cntNotPresent = cntNotPresent + 1
+                continue
+            if 'size' in m:
+                if myMap['size'] != m ['size']:
+                    Warn('HIDEIMPORT: map ' + mapName(m) + ' has different size than ours, ignored as invalid')
+                    cntInvalid = cntInvalid + 1
+                    continue
+            if 'mtime' in m:
+                if myMap['mtime'] != m ['mtime']:
+                    Warn('HIDEIMPORT: map ' + mapName(m) + ' has different mtime than ours, ignored as invalid')
+                    cntInvalid = cntInvalid + 1
+                    continue
+
+            if 'hidden' not in m:
+                Warn('HIDEIMPORT: map ' + mapName(m) + ' has no hidden state to import, ignored as invalid')
+                cntInvalid = cntInvalid + 1
+                continue
+            if m['hidden'] > 0:
+                m['hidden'] = 1
+                state = 'HIDDEN'
+            else:
+                m['hidden'] = 0
+                state = 'UNHIDDEN'
+            if m['hidden'] == myMap['hidden']:
+                Debug('HIDEIMPORT: map ' + mapName(m) + ' kept as ' + state)
+                cntKept = cntKept + 1
+                continue
+            try:
+                if m['hidden'] == 0:
+                    self.hideMap(myMap, False)
+                    cntUnhidden = cntUnhidden + 1
+                else:
+                    self.hideMap(myMap, True)
+                    cntHidden = cntHidden + 1
+                Info('HIDEIMPORT: map ' + mapName(myMap) + ' is now ' + state)
+            except Exception as E:
+                Warn(name + ': map ' + mapName(m) + ' failed to set to ' +state + ': ' + str(E))
+                cntFail = cntFail + 1
+        Info('HIDEIMPORT: ' + str(cntHidden) + ' hidden, ' + str(cntUnhidden) + ' unhidden, ' + str(cntKept) + ' unchanged, ' + str(cntNotPresent) + ' not present, ' + str(cntFiltered) + ' filtered, ' + str(cntInvalid) + ' invalid, ' + str(cntFail) + ' failed to change')
+
+    def hideImport(self, filename):
+        hideMaps, valid = self.loadMapListFile(filename)
+        if len(hideMaps) > 0 and valid:
+            self.hideImportMaps(hideMaps)
+        else:
+            Warn('HIDEIMPORT: no valid maps found')
+
     def listIgnored(self):
         files, cntAlready, cntFail = self.getUnindexedFiles(self.mapDir)
         for fname in files:
@@ -796,7 +893,7 @@ class remoteMapManager(MapManager):
 
     def update(self, forceRefresh = False):
         if forceRefresh:
-            self.vaild = False
+            self.valid = False
         try:
             if not self.valid:
                 self.getMapList()
@@ -1090,6 +1187,16 @@ class Commandline:
         self.parser.add_argument('-A', '--all',
                                  action = 'store_true',
                                  help = 'for HIDE or UNHIDE operations, when no filter is specified: really apply to ALL maps')
+        self.parser.add_argument('-E', '--export-file',
+                                 action = 'store',
+                                 nargs = 1,
+                                 default = 'olmappyExport.json',
+                                 help = 'for EXPORT... operations: the filename to write to, default is "%(default)s".')
+        self.parser.add_argument('-I', '--import-file',
+                                 action = 'store',
+                                 nargs = 1,
+                                 default = 'olmappyExport.json',
+                                 help = 'for IMPORT... operations: the filename to read from, default is "%(default)s".')
         self.parser.add_argument('--version', action='version', version='%(prog)s 1.0')
         self.parser.epilog = 'See README.md for details.'
 
@@ -1147,6 +1254,8 @@ class Operation(enum.IntEnum):
     WRITECONFIG = 7
     SHOWCONFIG = 8
     LISTIGNORED = 9
+    EXPORTLIST = 10
+    HIDEIMPORT = 11
 
     def apply(self):
         operations = [
@@ -1159,7 +1268,9 @@ class Operation(enum.IntEnum):
             self.doUnhide,
             self.doWriteConfig,
             self.doShowConfig,
-            self.doListIgnored
+            self.doListIgnored,
+            self.doExportList,
+            self.doHideImport
         ]
 
         res = 999
@@ -1207,10 +1318,10 @@ class Operation(enum.IntEnum):
         local.saveMapList()
         return 0
 
-    def doList(self, local=True):
+    def doList(self, local=True, doExport=False):
         manager = localMapManager() if local else remoteMapManager()
         manager.update()
-        manager.listMaps()
+        manager.listMaps(doExport)
         return 0
 
     def doListLocal(self):
@@ -1246,6 +1357,17 @@ class Operation(enum.IntEnum):
         local.update()
         local.listIgnored()
         return 0
+
+    def doExportList(self):
+        return self.doList(True, True)
+
+    def doHideImport(self):
+        local = localMapManager()
+        local.update()
+        local.hideImport(Cmd.args.import_file[0])
+        local.saveMapList()
+        return 0
+
 
 ##############################################################################
 # main program entry point                                                   #
