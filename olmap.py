@@ -825,13 +825,38 @@ class remoteMapManager(MapManager):
             raise OlmappyTransferError(text) from E
 
 ##############################################################################
+# class for string filter                                                    #
+##############################################################################
+
+class StringFilter:
+    def __init__(self, value, exact = False, caseSensitive = None):
+        self.value = value
+        self.exact = exact
+        self.caseSensitive = caseSensitive
+
+    def validate(self, caseSensitive):
+        if self.caseSensitive == None:
+            self.caseSensitive = caseSensitive
+        if not self.caseSensitive:
+            self.value = self.value.casefold()
+
+    def apply(self, s):
+        s2 = s if self.caseSensitive else s.casefold()
+        if self.exact:
+            return (self.value == s2)
+        else:
+            return (self.value in s2)
+
+##############################################################################
 # class for map filtering                                                    #
 ##############################################################################
 
 class MapFilter:
     def __init__(self):
         self.names = []
+        self.exactnames = []
         self.filenames = []
+        self.exactfilefilenames = []
         self.types = 0
         self.time_before = None
         self.time_after = None
@@ -843,28 +868,26 @@ class MapFilter:
 
     @staticmethod
     def validateStringFilter(filterList, caseSensitive):
-        if not caseSensitive:
-            for i in range(0,len(filterList)):
-                filterList[i] = filterList[i].casefold()
+        for filter in filterList:
+            filter.validate(caseSensitive)
 
     @staticmethod
-    def inString(filterList, s, caseSensitive):
+    def inString(filterList, s):
         if len(filterList) < 1:
             return True
-        sc = s if caseSensitive else s.casefold()
         for f in filterList:
-            if f in sc:
+            if f.apply(s):
                 return True
         return False
 
     @staticmethod
-    def inStringList(filterList, sList, caseSensitive):
+    def inStringList(filterList, sList):
         if len(sList) < 1:
             return False
         if len(filterList) < 1:
             return True
         for s in sList:
-            if MapFilter.inString(filterList, s, caseSensitive):
+            if MapFilter.inString(filterList, s):
                 return True
         return False
 
@@ -896,15 +919,15 @@ class MapFilter:
                 for l in m['levels']:
                     t = MapType.MapTypeString(l['type'])
                     if (t & self.types) == t:
-                        if self.inString(self.names, l['name'], self.filterCaseSensitive):
+                        if self.inString(self.names, l['name']):
                             found = True
                             break
                 if not found:
                     return False
         else:
-            if not self.inStringList(self.names, m['names'], self.filterCaseSensitive):
+            if not self.inStringList(self.names, m['names']):
                 return False
-        if not self.inString(self.filenames, m['filename'], self.filenameCaseSensitive):
+        if not self.inString(self.filenames, m['filename']):
             return False
         if self.time_before != None:
             if m['mtime'] >= self.time_before:
@@ -1031,10 +1054,18 @@ class Commandline:
                                  nargs = 1,
                                  action = 'append',
                                  help = 'add filter for map name')
+        self.parser.add_argument('-N', '--exact-name',
+                                 nargs = 1,
+                                 action = 'append',
+                                 help = 'add filter for exact map name')
         self.parser.add_argument('-f', '--filename',
                                  nargs = 1,
                                  action = 'append',
                                  help = 'add filter for map filename')
+        self.parser.add_argument('-F', '--exact-filename',
+                                 nargs = 1,
+                                 action = 'append',
+                                 help = 'add filter for exact map filename')
         self.parser.add_argument('-t', '--type',
                                  type = MapType.MapTypeString,
                                  nargs = 1,
@@ -1082,10 +1113,16 @@ class Commandline:
                 Filter.types = Filter.types | t[0]
         if self.args.name != None:
             for n in self.args.name:
-                Filter.names = Filter.names + [n[0]]
+                Filter.names = Filter.names + [StringFilter(n[0])]
         if self.args.filename != None:
             for n in self.args.filename:
-                Filter.filenames = Filter.filenames + [n[0]]
+                Filter.filenames = Filter.filenames + [StringFilter(n[0])]
+        if self.args.exact_name != None:
+            for n in self.args.exact_name:
+                Filter.names = Filter.names + [StringFilter(n[0], exact=True)]
+        if self.args.exact_filename != None:
+            for n in self.args.exact_filename:
+                Filter.filenames = Filter.filenames + [StringFilter(n[0], exact=True)]
         if self.args.time_before != None:
             Filter.time_before = self.args.time_before[0]
         if self.args.time_after != None:

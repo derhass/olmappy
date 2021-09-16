@@ -21,8 +21,12 @@ optional arguments:
   -s NAME VALUE, --set NAME VALUE
                         set configuration option NAME to VALUE
   -n NAME, --name NAME  add filter for map name
+  -N EXACT_NAME, --exact-name EXACT_NAME
+                        add filter for exact map name
   -f FILENAME, --filename FILENAME
                         add filter for map filename
+  -F EXACT_FILENAME, --exact-filename EXACT_FILENAME
+                        add filter for exact map filename
   -t TYPE, --type TYPE  add filter for map type
   -b DATETIME, --time-before DATETIME
                         add filter for map mtime: must be before given
@@ -67,7 +71,7 @@ Use `WRITECONFIG` to generate the initial config file, and edit the values as yo
 
 #### FILTERS:
 
-* The filters `--name` or `--filename` accept strings and will match any substring in the map name / map filename.
+* The filters `--name` or `--filename` accept strings and will match any substring in the map name / map filename. The `--exact-name` or `--exact-filename` match only if the strings are identical.
 * The `--type` filter can be `SP`, `MP`, or `CM` for Single-Player, Multi-Player, or Challene-Mode maps, respectively. The case of the letters does not matter. Note that a single map file can and typically does contain maps for different types. If the filter matches any type of such an archive file, it will apply to the whole file, not the sub-maps in it.
 * The `--time-before` and `--time-after` filters take a date and time in the form `YEAR-MONTH-DAY HOUR:MINUTE:SECOND` or `YEAR-MONTH-DAY` (for midnight at that point in time).
 * The `--hidden` and `--unhidden` filters select only hidden or unhidden maps, respectively.
@@ -99,7 +103,7 @@ olmap.py WRITECONFIG
 
 To hide a map you don't like:
 ```
-olmap.py HIDE -n skull
+olmap.py HIDE -N skull
 ```
 
 To unhide all currently hidden maps:
