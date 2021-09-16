@@ -1090,7 +1090,7 @@ class Commandline:
         self.parser.add_argument('-A', '--all',
                                  action = 'store_true',
                                  help = 'for HIDE or UNHIDE operations, when no filter is specified: really apply to ALL maps')
-        self.parser.add_argument('--version', action='version', version='%(prog)s 0.1')
+        self.parser.add_argument('--version', action='version', version='%(prog)s 1.0')
         self.parser.epilog = 'See README.md for details.'
 
     def parse(self):
