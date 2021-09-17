@@ -500,6 +500,56 @@
         "hidden": 1
     },
     {
+        "url": "/files/8804b9300bdd15dee514db86d3c4cc5e/Malevolence.zip",
+        "mtime": 1546794800,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "MALEVOLENCE"
+            },
+            {
+                "type": "mp",
+                "name": "MALEVOLENCE"
+            }
+        ],
+        "size": 37819122,
+        "id": "8804b9300bdd15dee514db86d3c4cc5e",
+        "filename_encoded": "Malevolence.zip",
+        "filename": "Malevolence.zip",
+        "names": [
+            "MALEVOLENCE"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/c7e53581bd921da602b3944fedd175d2/Chromatic2.zip",
+        "mtime": 1562007128,
+        "levels": [
+            {
+                "type": "sp",
+                "name": "CHROMATIC2"
+            },
+            {
+                "type": "cm",
+                "name": "CHROMATIC2"
+            },
+            {
+                "type": "mp",
+                "name": "CHROMATIC2"
+            }
+        ],
+        "size": 13248094,
+        "id": "c7e53581bd921da602b3944fedd175d2",
+        "filename_encoded": "Chromatic2.zip",
+        "filename": "Chromatic2.zip",
+        "names": [
+            "CHROMATIC2"
+        ],
+        "types": 7,
+        "hidden": 1
+    },
+    {
         "url": "/files/33c7f858dc8c6d6e970868a5b3097c10/cm_slipstream.zip",
         "mtime": 1547394678,
         "levels": [
