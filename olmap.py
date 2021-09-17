@@ -789,9 +789,13 @@ class localMapManager(MapManager):
                 continue
             if m['hidden'] > 0:
                 m['hidden'] = 1
-                state = 'HIDDEN'
             else:
                 m['hidden'] = 0
+            if Cmd.args.reverse == True:
+                m['hidden'] = 1 - m['hidden']
+            if m['hidden'] > 0:
+                state = 'HIDDEN'
+            else:
                 state = 'UNHIDDEN'
             if m['hidden'] == myMap['hidden']:
                 Debug('HIDEIMPORT: map ' + mapName(m) + ' kept as ' + state)
@@ -1197,6 +1201,10 @@ class Commandline:
                                  nargs = 1,
                                  default = 'olmappyExport.json',
                                  help = 'for IMPORT... operations: the filename to read from, default is "%(default)s".')
+        self.parser.add_argument('--reverse',
+                                 action = 'store_true',
+                                 default = 'olmappyExport.json',
+                                 help = 'for HIDEIMPORT: reverse the "hidden" state of the imported map files.')
         self.parser.add_argument('--version', action='version', version='%(prog)s 1.1-pre')
         self.parser.epilog = 'See README.md for details.'
 

@@ -44,6 +44,8 @@ optional arguments:
   -I IMPORT_FILE, --import-file IMPORT_FILE
                         for IMPORT... operations: the filename to read from,
                         default is "olmappyExport.json".
+  --reverse             for HIDEIMPORT: reverse the "hidden" state of the
+                        imported map files.
   --version             show program's version number and exit
 ```
 
@@ -60,7 +62,7 @@ The `OPERATION`s are:
 * `SHOWCONFIG`: Show the currently effective configuration (taking the config file and all `--set` parameters into account).
 * `LISTIGNORED`: List all un-indexed files in the map directory.
 * `EXPORTLIST`: Export the list of local maps (with potential filters applied) to the file specified by the `--export-file` argument.
-* `HIDEIMPORT`: Import the hidden / unhidden state from a file specified by the `--import-file` argument. Note that `HIDEIMPORT` will hide AND unhide maps from the file, but you can combine it with the `--hidden` or `--unhidden` filters to specifically only hide or unhide maps. The import only applies to maps you locally already have, other maps are ignored. If you later download such a map, you can apply the import file again.
+* `HIDEIMPORT`: Import the hidden / unhidden state from a file specified by the `--import-file` argument. Note that `HIDEIMPORT` will hide AND unhide maps as stated in the file, but you can combine it with the `--hidden` or `--unhidden` filters to specifically only hide or unhide maps. Note that all filters are applied to the import file, not your local map base. The import only applies to maps you locally already have, other maps are ignored. If you later download such a map, you can apply the import file again. `HIDEIMPORT` can be combined with the `--reverse` option to explicitely unhide maps marked as hidden and vice-versa, as sort of undoing the changes (but it does not take the previous state of your maps into account).
 
 #### CONFIGURATION:
 
