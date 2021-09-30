@@ -837,11 +837,16 @@ class remoteMapManager(MapManager):
         self.name = 'remote'
         self.valid = False
         self.listURL = Config.settings['mapServer'] + Config.settings['mapServerListURL']
+        certMode = 'CERT_REQUIRED' if Config.settings['verifyCertificates'] else 'CERT_NONE'
+        if len(Config.settings['certificateBundle']) > 0:
+            self.http = urllib3.PoolManager(cert_reqs=certMode, ca_certs=Config.settings['certificateBundle'])
+        else:
+            self.http = urllib3.PoolManager(cert_reqs=certMode)
 
     def getMapList(self):
         url = self.listURL
         try:
-            request = urllib3.PoolManager().request('GET', url)
+            request = self.http.request('GET', url)
             if (request.status >= 200 and request.status < 300):
                 try:
                     Debug('querying remote map list ' + url)
@@ -859,7 +864,7 @@ class remoteMapManager(MapManager):
         except Exception as E:
             self.maps = []
             self.valid = False
-            raise OlmappyTransferError('failed to GET map list ' + url) from E
+            raise OlmappyTransferError('failed to GET map list ' + url + ': ' + str(E)) from E
 
     def validateMapList(self):
         if not self.valid:
@@ -912,7 +917,7 @@ class remoteMapManager(MapManager):
             url = Config.settings['mapServer'] +  m['url']
             outFile = open(outFileName, 'wb')
             Debug('attempting to download ' + url)
-            request = urllib3.PoolManager().request('GET', url, preload_content = False)
+            request = self.http.request('GET', url, preload_content = False)
             for chunk in request.stream(64*1024):
                 outFile.write(chunk)
             outFile.flush()
@@ -1058,6 +1063,8 @@ class Settings:
         self.settings['removeUnknownMaps'] = False
         self.settings['autoImport'] = True
         self.settings['configFile'] = os.getenv('HOME', '.') +  '/.config/olmappy.json'
+        self.settings['verifyCertificates'] = True
+        self.settings['certificateBundle'] = ''
 
     def applySettings(self, newSettings):
         for name, value in newSettings.items():
@@ -1081,6 +1088,7 @@ class Settings:
         self.validatebool('filenameCaseSensitive')
         self.validatebool('filterCaseSensitive')
         self.validatebool('autoImport')
+        self.validatebool('verifyCertificates')
         self.validateint('logLevel')
 
     def load(self, configFile = None, errorOk = True):
