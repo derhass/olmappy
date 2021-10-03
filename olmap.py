@@ -129,22 +129,35 @@ def equalFileNames(a, b):
     else:
         return (a == b)
 
-def mapName(m):
-    return '"' + m['id'] + '/' + m['filename'] + '"'
+def mapStatus(m):
+    desc = '(' + (' ' if m['hidden'] > 0 else '*') + ')'
+    return desc
 
-def mapTime(m):
-    t = time.localtime(m['mtime'])
-    return time.strftime('%Y-%m-%d %H:%M:%S', t)
+def mapTypes(m, compact=False):
+    return MapType.getCombinedDesc(m['types'], None if compact else '  ')
 
-def mapDesc(m):
-    desc = MapType.getCombinedDesc(m['types']) + ' (' + (' ' if m['hidden'] > 0 else '*') + ')' + ' "' + m['filename'] + '": ['
+def mapAndLevelName(m):
+    desc = '"' + m['filename'] + '": ['
     cnt = 0
     for n in m['names']:
         if cnt > 0:
             desc = desc + ', '
         desc = desc + '"' + n + '"'
         cnt = cnt + 1
-    desc = desc + ']' + ' (' + mapTime(m) + ')'
+    desc = desc + ']'
+    return desc
+
+def mapName(m):
+    #return '"' + m['id'] + '/' + m['filename'] + '"'
+    return mapAndLevelName(m) + ' ' + mapTypes(m, True)
+
+def mapTime(m):
+    t = time.localtime(m['mtime'])
+    return time.strftime('%Y-%m-%d %H:%M:%S', t)
+
+def mapDesc(m):
+    desc = mapTypes(m) + ' ' + mapStatus(m) + ' ' +  mapAndLevelName(m)
+    desc = desc + ' (' + mapTime(m) + ')'
     return desc
 
 def parseDateTime(s):
