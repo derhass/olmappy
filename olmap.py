@@ -1226,7 +1226,7 @@ class Commandline:
                                  action = 'store_true',
                                  default = 'olmappyExport.json',
                                  help = 'for HIDEIMPORT: reverse the "hidden" state of the imported map files.')
-        self.parser.add_argument('--version', action='version', version='%(prog)s 1.1')
+        self.parser.add_argument('--version', action='version', version='%(prog)s 1.2-pre')
         self.parser.epilog = 'See README.md for details.'
 
     def parse(self):
