@@ -416,7 +416,6 @@ class localMapManager(MapManager):
             target = dst
             index = 1
             while True:
-                print('A', target, index)
                 if os.path.isfile(target):
                     if filecmp.cmp(src, target, shallow=False):
                         Warn('Target "' + target + '" already exists and is identical, removing source only')
@@ -430,7 +429,6 @@ class localMapManager(MapManager):
                         target = newtarget
                 else:
                     os.rename(src,target)
-                    print('C', target, index)
                     break
         except Exception as E:
             Warn('Failed to replace "' + src + '" to "' + dst + '": ' + str(E))
