@@ -420,7 +420,6 @@ class localMapManager(MapManager):
                     if filecmp.cmp(src, target, shallow=False):
                         Warn('Target "' + target + '" already exists and is identical, removing source only')
                         os.remove(src)
-                        print('B', target, index)
                         break
                     else:
                         newtarget = dst + '_' +str(index)
@@ -1325,7 +1324,6 @@ class Operation(enum.IntEnum):
             raise ValueError from E
 
     def doHelp(self):
-        print('xxx')
         return 0
 
     def doImport(self):
