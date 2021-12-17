@@ -566,13 +566,14 @@ class localMapManager(MapManager):
                 Debug('existing Map is unchanged')
             else:
                 m['hidden'] = myMap['hidden']
+                self.doReplaceMap(myMap)
                 self.maps.remove(myMap)
                 doUpdate = True
                 code = 2
                 Info('found UPDATED map: ' + mapName(m))
 
         if doUpdate:
-            filename = self.mapDir + m['filename']
+            filename = self.GetMapPath(m)
             Info("downloading " + mapName(m) + ' to "' + filename + '"')
             remote.download(m, filename)
             if self.validateMap(m):
