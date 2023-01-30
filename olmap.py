@@ -185,6 +185,28 @@ def parseDateTime(s):
         raise ValueError from E
 
 ##############################################################################
+# os-specific functions                                                      #
+##############################################################################
+
+def isWindows():
+    return os.name == 'nt'
+
+def getHomeDir():
+    if isWindows():
+        return os.getenv('USERPROFILE', '.') + '/'
+    else:
+        return os.getenv('HOME', '.') + '/'
+
+def getConfigDir():
+    return getHomeDir() + '.config/'
+
+def getDefaultMapDir():
+    if isWindows():
+        return os.getenv('ProgramData','.') + '/Revival/Overload/'
+    else:
+        return '/usr/share/Revival/Overload/'
+
+##############################################################################
 # base class for the map managers                                            #
 ##############################################################################
 
@@ -373,6 +395,8 @@ class localMapManager(MapManager):
         if self.mapDir != Config.settings['mapPath']:
             self.mapDir = Config.settings['mapPath']
             forceRefresh = True
+        if not os.access(self.mapDir, os.W_OK):
+            raise OlmappyError('mapPath "' + self.mapDir +'" is not writable!')
         if forceRefresh or not self.valid:
             os.makedirs(self.mapDir, exist_ok=True)
             os.makedirs(self.mapDir + self.hiddenDir, exist_ok=True)
@@ -1065,7 +1089,7 @@ class MapFilter:
 class Settings:
     def __init__(self):
         self.settings = {}
-        self.settings['mapPath'] = ' /usr/share/Revival/Overload/'
+        self.settings['mapPath'] = getDefaultMapDir()
         self.settings['mapServer'] = 'https://overloadmaps.com'
         self.settings['mapServerListURL'] = '/data/all.json'
         self.settings['logLevel'] = LogLevel.INFO
@@ -1073,7 +1097,7 @@ class Settings:
         self.settings['filterCaseSensitive'] = False
         self.settings['removeUnknownMaps'] = False
         self.settings['autoImport'] = True
-        self.settings['configFile'] = os.getenv('HOME', '.') +  '/.config/olmappy.json'
+        self.settings['configFile'] = getConfigDir() + 'olmappy.json'
         self.settings['verifyCertificates'] = True
         self.settings['certificateBundle'] = ''
 
