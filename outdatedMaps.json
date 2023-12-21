@@ -141,29 +141,6 @@
         "hidden": 1
     },
     {
-        "url": "/files/9c1278e7f70bf7d061e5c208f7b86a14/Vamped.zip",
-        "mtime": 1605402653,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "VAMPED"
-            },
-            {
-                "type": "mp",
-                "name": "VAMPED"
-            }
-        ],
-        "size": 1495787,
-        "id": "9c1278e7f70bf7d061e5c208f7b86a14",
-        "filename_encoded": "Vamped.zip",
-        "filename": "Vamped.zip",
-        "names": [
-            "VAMPED"
-        ],
-        "types": 5,
-        "hidden": 1
-    },
-    {
         "url": "/files/88c41178308f830af4dd7b129435009a/cage_mp.zip",
         "mtime": 1553103617,
         "levels": [
@@ -180,30 +157,6 @@
             "CAGE"
         ],
         "types": 4,
-        "hidden": 1
-    },
-    {
-        "url": "/files/dac7c419f484ee041a765c0fd10a5f31/superhappyfunland%20v1.1.zip",
-        "mtime": 1597412925,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "SUPER HAPPY FUN LAND"
-            },
-            {
-                "type": "mp",
-                "name": "SUPER HAPPY FUN LAND V1.1"
-            }
-        ],
-        "size": 2670260,
-        "id": "dac7c419f484ee041a765c0fd10a5f31",
-        "filename_encoded": "superhappyfunland%20v1.1.zip",
-        "filename": "superhappyfunland v1.1.zip",
-        "names": [
-            "SUPER HAPPY FUN LAND",
-            "SUPER HAPPY FUN LAND V1.1"
-        ],
-        "types": 5,
         "hidden": 1
     },
     {
@@ -306,29 +259,6 @@
         "hidden": 1
     },
     {
-        "url": "/files/02cd21878246fe13988f9dd7cd22faf6/I%20Don%27t%20Care%20v1.1.zip",
-        "mtime": 1603779423,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "I DON'T CARE V1.1"
-            },
-            {
-                "type": "mp",
-                "name": "I DON'T CARE V1.1"
-            }
-        ],
-        "size": 2017946,
-        "id": "02cd21878246fe13988f9dd7cd22faf6",
-        "filename_encoded": "I%20Don%27t%20Care%20v1.1.zip",
-        "filename": "I Don't Care v1.1.zip",
-        "names": [
-            "I DON'T CARE V1.1"
-        ],
-        "types": 5,
-        "hidden": 1
-    },
-    {
         "url": "/files/40672910c3e01072d0252ef101c18138/hedgerace.zip",
         "mtime": 1615264250,
         "levels": [
@@ -405,6 +335,25 @@
         "hidden": 1
     },
     {
+        "url": "/files/9264e82f79fad8ce41715dfeeeb4920e/Netherite.zip",
+        "mtime": 1615265731,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "NETHERITE"
+            }
+        ],
+        "size": 13368420,
+        "id": "9264e82f79fad8ce41715dfeeeb4920e",
+        "filename_encoded": "Netherite.zip",
+        "filename": "Netherite.zip",
+        "names": [
+            "NETHERITE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
         "url": "/files/e99ee386091a57449873e22ffb8e7d2a/Infinite%20Abyss%20Race.zip",
         "mtime": 1616445249,
         "levels": [
@@ -419,6 +368,25 @@
         "filename": "Infinite Abyss Race.zip",
         "names": [
             "INFINITE ABYSS RACE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/ab016bef85ad1f06fa98aede80432f66/Isotoxin_v2.zip",
+        "mtime": 1623145648,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "ISOTOXIN V2"
+            }
+        ],
+        "size": 4234439,
+        "id": "ab016bef85ad1f06fa98aede80432f66",
+        "filename_encoded": "Isotoxin_v2.zip",
+        "filename": "Isotoxin_v2.zip",
+        "names": [
+            "ISOTOXIN V2"
         ],
         "types": 4,
         "hidden": 1
@@ -520,33 +488,6 @@
             "MALEVOLENCE"
         ],
         "types": 6,
-        "hidden": 1
-    },
-    {
-        "url": "/files/c7e53581bd921da602b3944fedd175d2/Chromatic2.zip",
-        "mtime": 1562007128,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "CHROMATIC2"
-            },
-            {
-                "type": "cm",
-                "name": "CHROMATIC2"
-            },
-            {
-                "type": "mp",
-                "name": "CHROMATIC2"
-            }
-        ],
-        "size": 13248094,
-        "id": "c7e53581bd921da602b3944fedd175d2",
-        "filename_encoded": "Chromatic2.zip",
-        "filename": "Chromatic2.zip",
-        "names": [
-            "CHROMATIC2"
-        ],
-        "types": 7,
         "hidden": 1
     },
     {
@@ -748,29 +689,6 @@
         "hidden": 1
     },
     {
-        "url": "/files/72746ef399117ebc0942c10e62a0e52f/Birds%20Nest.zip",
-        "mtime": 1603696539,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "BIRDS NEST"
-            },
-            {
-                "type": "mp",
-                "name": "BIRDS NEST"
-            }
-        ],
-        "size": 724446,
-        "id": "72746ef399117ebc0942c10e62a0e52f",
-        "filename_encoded": "Birds%20Nest.zip",
-        "filename": "Birds Nest.zip",
-        "names": [
-            "BIRDS NEST"
-        ],
-        "types": 5,
-        "hidden": 1
-    },
-    {
         "url": "/files/49b4dd625afd2728a090c665d30a1690/Icewolfe_Death_Match.zip",
         "mtime": 1590926158,
         "levels": [
@@ -794,40 +712,6 @@
         "hidden": 1
     },
     {
-        "url": "/files/4e0511fb409a4ee0120ee24c0ebd67f8/Contest%20submission%20CM%20pack.zip",
-        "mtime": 1546795522,
-        "levels": [
-            {
-                "type": "cm",
-                "name": "TURNABOUT"
-            },
-            {
-                "type": "cm",
-                "name": "SIMPLICITY"
-            },
-            {
-                "type": "cm",
-                "name": "SIGMA STATION"
-            },
-            {
-                "type": "cm",
-                "name": "CHROMATIC DESTINATION"
-            }
-        ],
-        "size": 23127008,
-        "id": "4e0511fb409a4ee0120ee24c0ebd67f8",
-        "filename_encoded": "Contest%20submission%20CM%20pack.zip",
-        "filename": "Contest submission CM pack.zip",
-        "names": [
-            "TURNABOUT",
-            "SIMPLICITY",
-            "SIGMA STATION",
-            "CHROMATIC DESTINATION"
-        ],
-        "types": 2,
-        "hidden": 1
-    },
-    {
         "url": "/files/c058942eab21d98b3736fb67a428b0fa/SIGNET.zip",
         "mtime": 1615317635,
         "levels": [
@@ -844,29 +728,6 @@
             "RACE SIGNET"
         ],
         "types": 4,
-        "hidden": 1
-    },
-    {
-        "url": "/files/a1d695d5cac46db7f3a7d68bcecf9aa6/KO.zip",
-        "mtime": 1597385362,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "KO"
-            },
-            {
-                "type": "mp",
-                "name": "KO"
-            }
-        ],
-        "size": 9130632,
-        "id": "a1d695d5cac46db7f3a7d68bcecf9aa6",
-        "filename_encoded": "KO.zip",
-        "filename": "KO.zip",
-        "names": [
-            "KO"
-        ],
-        "types": 5,
         "hidden": 1
     },
     {
@@ -988,33 +849,6 @@
         "hidden": 1
     },
     {
-        "url": "/files/dc169f164ee27894813b8f501926bb33/Slanted.zip",
-        "mtime": 1591902727,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "SLANTED"
-            },
-            {
-                "type": "cm",
-                "name": "SLANTED"
-            },
-            {
-                "type": "mp",
-                "name": "SLANTED"
-            }
-        ],
-        "size": 9258239,
-        "id": "dc169f164ee27894813b8f501926bb33",
-        "filename_encoded": "Slanted.zip",
-        "filename": "Slanted.zip",
-        "names": [
-            "SLANTED"
-        ],
-        "types": 7,
-        "hidden": 1
-    },
-    {
         "url": "/files/a5f0db8dfdf7fb770495e9eee4913e06/Galatea%20Race.zip",
         "mtime": 1590067403,
         "levels": [
@@ -1031,29 +865,6 @@
             "GALATEA RACE"
         ],
         "types": 4,
-        "hidden": 1
-    },
-    {
-        "url": "/files/c75c8eff8ea2d422a4717d71a123f814/I%20Don%27t%20Care.zip",
-        "mtime": 1597942929,
-        "levels": [
-            {
-                "type": "sp",
-                "name": "I DON'T CARE"
-            },
-            {
-                "type": "mp",
-                "name": "I DON'T CARE"
-            }
-        ],
-        "size": 8309569,
-        "id": "c75c8eff8ea2d422a4717d71a123f814",
-        "filename_encoded": "I%20Don%27t%20Care.zip",
-        "filename": "I Don't Care.zip",
-        "names": [
-            "I DON'T CARE"
-        ],
-        "types": 5,
         "hidden": 1
     },
     {
@@ -1132,6 +943,303 @@
         "filename": "KegpartyU.zip",
         "names": [
             "KEGPARTY"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/1014f56b1f478aa5544dca8c5b8538e4/Klaxon.zip",
+        "mtime": 1635537392,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "KLAXON"
+            }
+        ],
+        "size": 61879870,
+        "id": "1014f56b1f478aa5544dca8c5b8538e4",
+        "filename_encoded": "Klaxon.zip",
+        "filename": "Klaxon.zip",
+        "names": [
+            "KLAXON"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/8227e22a83a799bc3bab76f6b2fa2d5b/Winona.zip",
+        "mtime": 1636410790,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "WINONA"
+            }
+        ],
+        "size": 44190260,
+        "id": "8227e22a83a799bc3bab76f6b2fa2d5b",
+        "filename_encoded": "Winona.zip",
+        "filename": "Winona.zip",
+        "names": [
+            "WINONA"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/4e0511fb409a4ee0120ee24c0ebd67f8/Contest%20submission%20CM%20pack.zip",
+        "mtime": 1546795522,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "TURNABOUT"
+            },
+            {
+                "type": "cm",
+                "name": "CHROMATIC DESTINATION"
+            },
+            {
+                "type": "cm",
+                "name": "SIMPLICITY"
+            },
+            {
+                "type": "cm",
+                "name": "SIGMA STATION"
+            }
+        ],
+        "size": 23127008,
+        "id": "4e0511fb409a4ee0120ee24c0ebd67f8",
+        "filename_encoded": "Contest%20submission%20CM%20pack.zip",
+        "filename": "Contest submission CM pack.zip",
+        "names": [
+            "TURNABOUT",
+            "CHROMATIC DESTINATION",
+            "SIMPLICITY",
+            "SIGMA STATION"
+        ],
+        "types": 2,
+        "hidden": 1
+    },
+    {
+        "url": "/files/300fba63dd6546017ba0487ca17bce37/Betty%20Sue.zip",
+        "mtime": 1637449374,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "BETTY SUE"
+            },
+            {
+                "type": "mp",
+                "name": "BETTY SUE"
+            }
+        ],
+        "size": 43673149,
+        "id": "300fba63dd6546017ba0487ca17bce37",
+        "filename_encoded": "Betty%20Sue.zip",
+        "filename": "Betty Sue.zip",
+        "names": [
+            "BETTY SUE"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/310886cdc306dee459919e7cd2eca241/testhorizon.zip",
+        "mtime": 1638788796,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "TESTHORIZON"
+            }
+        ],
+        "size": 1041262,
+        "id": "310886cdc306dee459919e7cd2eca241",
+        "filename_encoded": "testhorizon.zip",
+        "filename": "testhorizon.zip",
+        "names": [
+            "TESTHORIZON"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/2c8c2cbab67c696d49eeacef1cba1a0e/Mavericks.zip",
+        "mtime": 1639595611,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "MAVERICKS"
+            },
+            {
+                "type": "mp",
+                "name": "MAVERICKS"
+            }
+        ],
+        "size": 82020833,
+        "id": "2c8c2cbab67c696d49eeacef1cba1a0e",
+        "filename_encoded": "Mavericks.zip",
+        "filename": "Mavericks.zip",
+        "names": [
+            "MAVERICKS"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/dc169f164ee27894813b8f501926bb33/Slanted.zip",
+        "mtime": 1591902727,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "SLANTED"
+            },
+            {
+                "type": "mp",
+                "name": "SLANTED"
+            }
+        ],
+        "size": 9258239,
+        "id": "dc169f164ee27894813b8f501926bb33",
+        "filename_encoded": "Slanted.zip",
+        "filename": "Slanted.zip",
+        "names": [
+            "SLANTED"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/02cd21878246fe13988f9dd7cd22faf6/I%20Don%27t%20Care%20v1.1.zip",
+        "mtime": 1603779423,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "I DON'T CARE V1.1"
+            }
+        ],
+        "size": 2017946,
+        "id": "02cd21878246fe13988f9dd7cd22faf6",
+        "filename_encoded": "I%20Don%27t%20Care%20v1.1.zip",
+        "filename": "I Don't Care v1.1.zip",
+        "names": [
+            "I DON'T CARE V1.1"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/72746ef399117ebc0942c10e62a0e52f/Birds%20Nest.zip",
+        "mtime": 1603696539,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "BIRDS NEST"
+            }
+        ],
+        "size": 724446,
+        "id": "72746ef399117ebc0942c10e62a0e52f",
+        "filename_encoded": "Birds%20Nest.zip",
+        "filename": "Birds Nest.zip",
+        "names": [
+            "BIRDS NEST"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/dac7c419f484ee041a765c0fd10a5f31/superhappyfunland%20v1.1.zip",
+        "mtime": 1597412925,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "SUPER HAPPY FUN LAND V1.1"
+            }
+        ],
+        "size": 2670260,
+        "id": "dac7c419f484ee041a765c0fd10a5f31",
+        "filename_encoded": "superhappyfunland%20v1.1.zip",
+        "filename": "superhappyfunland v1.1.zip",
+        "names": [
+            "SUPER HAPPY FUN LAND V1.1"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/c75c8eff8ea2d422a4717d71a123f814/I%20Don%27t%20Care.zip",
+        "mtime": 1597942929,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "I DON'T CARE"
+            }
+        ],
+        "size": 8309569,
+        "id": "c75c8eff8ea2d422a4717d71a123f814",
+        "filename_encoded": "I%20Don%27t%20Care.zip",
+        "filename": "I Don't Care.zip",
+        "names": [
+            "I DON'T CARE"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/a1d695d5cac46db7f3a7d68bcecf9aa6/KO.zip",
+        "mtime": 1597385362,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "KO"
+            }
+        ],
+        "size": 9130632,
+        "id": "a1d695d5cac46db7f3a7d68bcecf9aa6",
+        "filename_encoded": "KO.zip",
+        "filename": "KO.zip",
+        "names": [
+            "KO"
+        ],
+        "types": 4,
+        "hidden": 1
+    },
+    {
+        "url": "/files/c7e53581bd921da602b3944fedd175d2/Chromatic2.zip",
+        "mtime": 1562007128,
+        "levels": [
+            {
+                "type": "cm",
+                "name": "CHROMATIC2"
+            },
+            {
+                "type": "mp",
+                "name": "CHROMATIC2"
+            }
+        ],
+        "size": 13248094,
+        "id": "c7e53581bd921da602b3944fedd175d2",
+        "filename_encoded": "Chromatic2.zip",
+        "filename": "Chromatic2.zip",
+        "names": [
+            "CHROMATIC2"
+        ],
+        "types": 6,
+        "hidden": 1
+    },
+    {
+        "url": "/files/9c1278e7f70bf7d061e5c208f7b86a14/Vamped.zip",
+        "mtime": 1605402653,
+        "levels": [
+            {
+                "type": "mp",
+                "name": "VAMPED"
+            }
+        ],
+        "size": 1495787,
+        "id": "9c1278e7f70bf7d061e5c208f7b86a14",
+        "filename_encoded": "Vamped.zip",
+        "filename": "Vamped.zip",
+        "names": [
+            "VAMPED"
         ],
         "types": 4,
         "hidden": 1
